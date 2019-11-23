@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity"
+    android:gravity="center"
+    android:background="@drawable/color_background">
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"/>
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:text="Đăng ký"
+        android:textColor="#ff00"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:gravity="center_vertical"
+            android:text="Email"
+            android:textColor="@android:color/background_dark"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edittextEmail"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="Nhập vào Email"
+            android:inputType="text"
+            android:background="@drawable/rounded_border_edittext"
+            android:paddingStart="5dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:gravity="center_vertical"
+            android:text="Nickname"
+            android:textColor="@android:color/background_dark"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edittextNickname"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="Nhập vào Nickname"
+            android:inputType="text"
+            android:background="@drawable/rounded_border_edittext"
+            android:paddingStart="5dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textViewPw"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:gravity="center_vertical"
+            android:text="Mật khẩu"
+            android:textColor="@android:color/background_dark"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edittextPasswordRegis"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/rounded_border_edittext"
+            android:hint="Nhập vào mật khẩu"
+            android:inputType="textPassword"
+            android:paddingStart="5dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:text=""/>
+
+        <EditText
+            android:id="@+id/edittextRePassword"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="Nhập lại mật khẩu"
+            android:inputType="textPassword"
+            android:background="@drawable/rounded_border_edittext"
+            android:paddingStart="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:paddingStart="80dp"
+        android:paddingEnd="40dp">
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Đăng ký"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:textAllCaps="false"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/button_select"/>
+
+        <Button
+            android:id="@+id/buttonCancelRegis"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Hủy"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:textAllCaps="false"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/button_select"/>
+    </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"/>
+</LinearLayout>

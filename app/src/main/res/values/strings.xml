@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AiLaTrieuPhu</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- ERROR_NOTIFICATION -->
+    <string name="err_internal_server">Thất bại! Lỗi server!</string>
+    <string name="err_connect">Thất bại! Lỗi kết nối!</string>
+</resources>

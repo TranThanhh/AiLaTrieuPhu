@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="400dp">
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:text="Chúc mừng bạn đã chiến thắng!"
+      android:gravity="center"
+      android:textSize="20sp"
+      android:textColor="#ff00"
+      android:textStyle="bold"/>
+  <TextView
+      android:id="@+id/textviewScoreWin"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="0.7"
+      android:text="2000 điểm"
+      android:gravity="center"
+      android:textSize="25sp"
+      android:textColor="#ff00"
+      android:textStyle="bold"/>
+  <ImageView
+      android:id="@+id/imgviewWin"
+      android:src="@drawable/ptr_congratulation"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="3"
+      android:layout_margin="10dp"/>
+  <LinearLayout
+      android:paddingStart="25dp"
+      android:paddingEnd="25dp"
+      android:padding="5dp"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="0.9">
+    <Button
+        android:id="@+id/buttonBackWin"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Chơi lại"
+        android:background="@drawable/button_select"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:layout_marginEnd="10dp"/>
+    <Button
+        android:id="@+id/buttonExitWin"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Thoát Game"
+        android:background="@drawable/button_select"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:layout_marginStart="10dp"/>
+  </LinearLayout>
+</LinearLayout>

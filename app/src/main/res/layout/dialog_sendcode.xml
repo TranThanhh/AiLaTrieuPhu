@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:paddingTop="13dp"
+    android:paddingStart="13dp"
+    android:paddingEnd="13dp"
+    android:paddingBottom="5dp"
+    android:background="#fff"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:orientation="horizontal"
+        android:background="@drawable/underline_fragment_title">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/mail" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="bottom"
+            android:paddingBottom="6dp"
+            android:layout_marginStart="10dp"
+            android:text="Chúng tôi sẽ gửi mã code tới email của bạn"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.5"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Email: "
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+        <EditText
+            android:id="@+id/editText_EnterEmail"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:hint="Nhập vào Email"
+            android:paddingStart="5dp"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/rounded_border_edittext"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/textViewSendCode"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Gửi Code"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/linkingTextview"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Code: "
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+        <EditText
+            android:id="@+id/editText_EnterCode"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:hint="Enter Code"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:paddingStart="5dp"
+            android:background="@drawable/rounded_border_edittext"
+            android:textSize="15sp"
+            android:gravity="center_vertical"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp">
+
+        <Button
+            android:id="@+id/buttonSubmitCode"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_select"
+            android:text="Xác nhận"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_marginEnd="5dp"/>
+
+        <Button
+            android:id="@+id/buttonCancelCode"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_select"
+            android:text="Hủy"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

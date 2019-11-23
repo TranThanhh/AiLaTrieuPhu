@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigationQuestion"
+        android:title="Câu hỏi"
+        android:icon="@drawable/ic_navigation_view_content"/>
+    <item
+        android:id="@+id/navigationMember"
+        android:title="Thành viên"
+        android:icon="@drawable/ic_member"/>
+</menu>

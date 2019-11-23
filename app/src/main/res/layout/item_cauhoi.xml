@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardviewCauHoi"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textviewIdCauHoi"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:gravity="center_vertical"
+                android:paddingTop="3dp"
+                android:text="#1:"
+                android:textColor="#004AAC"
+                android:textSize="13sp"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textviewCreatedTimeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Created date: "
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/textviewCreatedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="15-08-1997"
+                    android:textColor="@color/lightGray"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/textviewUpdateTimeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="| Update time: "
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/textviewUpdateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="15-08-1997"
+                    android:textColor="@color/lightGray"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textviewNoiDung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:text="Con gà có mấy cánh?"
+            android:textColor="#000"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Đáp án đúng:"
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:id="@+id/textviewDapAnDung"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:text="A. Có 2 cánh"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

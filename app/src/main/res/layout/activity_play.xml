@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/color_background"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/textviewTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Thời gian:\n0"
+            android:textColor="#000000"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/logo"/>
+
+        <TextView
+            android:id="@+id/textviewScore"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Điểm hiện tại:\n0"
+            android:gravity="center"
+            android:textColor="#000"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:id="@+id/img5050"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/help5050"/>
+        <ImageView
+            android:id="@+id/imgCall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/helpcall"/>
+        <ImageView
+            android:id="@+id/imgHelp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/helpmem"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textviewQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:padding="5dp"
+        android:layout_margin="20dp"
+        android:text="Câu hỏi"
+        android:textSize="16sp"
+        android:textColor="#fff"
+        android:background="@drawable/background_question"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <Button
+            android:id="@+id/buttonA"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:text="A"
+            android:textAllCaps="false"
+            android:background="@drawable/background_answer_normal"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/buttonB"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:text="B"
+            android:textAllCaps="false"
+            android:background="@drawable/background_answer_normal"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/buttonC"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:text="C"
+            android:textAllCaps="false"
+            android:background="@drawable/background_answer_normal"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/buttonD"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:text="D"
+            android:textAllCaps="false"
+            android:background="@drawable/background_answer_normal"
+            android:layout_marginBottom="15dp"/>
+        <Button
+            android:id="@+id/buttonExit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Dừng chơi"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="250dp"
+            android:background="@drawable/button_select"/>
+    </LinearLayout>
+
+</LinearLayout>
