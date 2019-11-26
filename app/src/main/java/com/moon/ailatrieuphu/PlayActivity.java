@@ -185,24 +185,24 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    private void getDapAnByIdCH(int idCauHoi,final CauHoi c){
-        ProgressDialogF.showLoading(PlayActivity.this);
-
-        apiService.getDapAn(idCauHoi).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
-                dapAn=response.body();
-                Log.d("dapan dung",dapAn);
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
+//    private void getDapAnByIdCH(int idCauHoi,final CauHoi c){
+//        ProgressDialogF.showLoading(PlayActivity.this);
+//
+//        apiService.getDapAn(idCauHoi).enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                ProgressDialogF.hideLoading();
+//                dapAn=response.body();
+//                Log.d("dapan dung",dapAn);
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
     private void setDapAnRandom(Button btn1, Button btn2, Button btn3, String s1, String s2, String s3) {
         int m=getRandomInt(1,3);
