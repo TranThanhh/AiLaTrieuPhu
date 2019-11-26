@@ -54,28 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtPassword.setText(Program.user.getPassword());
 
         apiService= APIConnect.getServer();
-        ProgressDialogF.showLoading(ProfileActivity.this);
-        apiService.getHighScore(Program.user.getIdUser()).enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                ProgressDialogF.hideLoading();
-                if(response.body()!=0){
-                    txtHighScore.setText(String.valueOf(response.body()));
-                    Program.diemCao=response.body();
-                    Log.d("score",String.valueOf(response.body()));
-                }
-                else{
-                    //Toast.makeText(ProfileActivity.this,"Set score fail!",Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-
-            }
-        });
-        txtHighScore.setText(String.valueOf(diemCao));
+        txtHighScore.setText(String.valueOf(Program.user.getDiemCao()));
     }
 
     private void setEvent() {
@@ -142,6 +121,7 @@ public class ProfileActivity extends AppCompatActivity {
                         final User user=new User();
                         user.setIdUser(Program.user.getIdUser());
                         user.setPassword(EncryptPass.md5(newPass));
+                        user.setUpdateTime(Program.getDateTimeNow());
                         ProgressDialogF.showLoading(ProfileActivity.this);
                         apiService.updatePassword(user).enqueue(new Callback<String>() {
                             @Override

@@ -4,6 +4,7 @@ import com.moon.ailatrieuphu.model.CauHoi;
 import com.moon.ailatrieuphu.model.Diem;
 import com.moon.ailatrieuphu.model.User;
 
+import java.lang.ref.Reference;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,27 +38,22 @@ public interface APIService {
     Call<String> setScore(@Body Diem diem);
 
     //Change Score
-    @PUT("diem/modifyScore")
-    Call<String> modifyScore(@Body Diem diem);
-
-    //Get HighScore
-    @GET("diem/diemcao")
-    Call<Integer> getHighScore(@Query("idUser") int idUser);
+    @PUT("user/modifyScore")
+    Call<String> modifyScore(@Body User user);
 
     //-----CAU HOI-----
     //GET List cau hoi theo idLoaiCH
     @GET("cauhoi/list2")
     Call<List<CauHoi>> getCauHoiByIdLoaiCH(@Query("idLoaiCH") int idLoaiCH);
-    @POST("dapan/dapandung")
-    //Check dap an dung
-    Call<String> getDapAnDung(@Query("idCauHoi") int idCauHoi,@Query("dapanUser") String dapanUser);
-//    @GET("/dapan")
-//    Call<String> getDapAn(@Query("idCauHoi") int idCauHoi);
+
+    //----ADMIN---------
     //Get list all cauhoi.
-    @GET("/cauhoi/list")
+    @GET("admin/cauhoi/list")
     Call<List<CauHoi>> getAllCauHoi();
     //add new CauHoi
-    @POST("/cauhoi/one")
+    @POST("admin/cauhoi/one")
     Call<String> addCauHoi(@Body CauHoi cauhoi);
 
+    @GET("admin/user/list")
+    Call<List<User>> getAllUser();
 }

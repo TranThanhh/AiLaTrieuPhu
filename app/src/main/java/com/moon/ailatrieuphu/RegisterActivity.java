@@ -3,8 +3,10 @@ package com.moon.ailatrieuphu;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +19,12 @@ import android.widget.Toast;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.email.EncryptPass;
+import com.moon.ailatrieuphu.email.GMailSender;
+import com.moon.ailatrieuphu.email.TimerSingleton;
 import com.moon.ailatrieuphu.model.Diem;
 import com.moon.ailatrieuphu.model.User;
 
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -32,6 +37,12 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister, btnCancelRegis,  diaBtnConfirmCode,  diaBtnCancelCode;
     private String email, nickname, password, passwordEncrypt, rePassword, errEmail, errNickname, errPassword;
     private TextView diaTxtSendCode, diaTxtSendCode2;
+    private String code = "";
+    private CountDownTimer timer;
+    public static int timeFuture = 60000;
+    public static int timeInterval = 1000;
+    public static String countTestTime = "0";
+
     APIService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +105,13 @@ public class RegisterActivity extends AppCompatActivity {
                     edtRePassword.setSelection(edtRePassword.getText().length());
                     return;
                 }
-                openDialogConfirmRegis();
                 passwordEncrypt= EncryptPass.md5(password.trim());
                 final User user=new User();
                 user.setEmail(email.trim());
                 user.setNickname(nickname.trim());
                 user.setPassword(passwordEncrypt);
+                user.setDiemCao(0);
+                Log.d("email", user.getEmail());
 
                 apiService.checkUserExists(user).enqueue(new Callback<String>() {
                     @Override
@@ -116,48 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                             return;
                         }
                         if(result.equals("no")){
-                            ProgressDialogF.showLoading(RegisterActivity.this);
-                            apiService.addUser(user).enqueue(new Callback<Integer>() {
-                                @Override
-                                public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                    ProgressDialogF.hideLoading();
-                                    if((response.body())!=0){
-                                        Toast.makeText(RegisterActivity.this,"Đăng ký thành công!",Toast.LENGTH_SHORT).show();
-                                        Diem diem=new Diem();
-                                        diem.setIdUser(response.body());
-                                        diem.setDiemCao(0);
-                                        apiService.setScore(diem).enqueue(new Callback<String>() {
-                                            @Override
-                                            public void onResponse(Call<String> call, Response<String> response) {
-                                                if(response.body().equals("success")){
-                                                    Log.d("diem","success");
-                                                }
-                                                else{
-                                                    Toast.makeText(RegisterActivity.this,"Default Diem that bai!",Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<String> call, Throwable t) {
-
-                                            }
-                                        });
-                                        //Program.user=user;
-                                        Intent intent=new Intent();
-                                        intent.putExtra("#email",user.getEmail());
-                                        setResult(RESULT_OK,intent);
-                                        finish();
-                                    }
-                                    else{
-                                        Toast.makeText(RegisterActivity.this,"Đăng ký thất bại",Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Integer> call, Throwable t) {
-
-                                }
-                            });
+                            showDialogCode(user);
                         }
                     }
                     @Override
@@ -175,14 +146,139 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void openDialogConfirmRegis() {
-        final Dialog dialog = new Dialog(RegisterActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_register_enter_code);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.show();
+    private void showDialogCode(User user) {
+        final String titleMail = "Ai là triệu phú: Mã code xác thực";
+        final String messageMail = "Xin chào! Đây là mã code bạn yêu cầu từ admin game Ai là triệu phú\n";
+        code = getRandomNumberString();
+        Log.d("code", code);
+        sendMail(titleMail, messageMail, code, user.getEmail());
 
+        TimerSingleton.timer.start();
+        final Dialog dialogSendCode = new Dialog(RegisterActivity.this);
+        dialogSendCode.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogSendCode.setContentView(R.layout.dialog_register_enter_code);
+        dialogSendCode.setCanceledOnTouchOutside(false);
+        dialogSendCode.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogSendCode.show();
+        diaEdtCode = dialogSendCode.findViewById(R.id.editText_Code);
+        diaTxtSendCode = dialogSendCode.findViewById(R.id.textViewSendCode1);
+        diaTxtSendCode2 = dialogSendCode.findViewById(R.id.textViewSendCode2);
+        diaBtnConfirmCode = dialogSendCode.findViewById(R.id.buttonSubmitCode);
+        diaBtnCancelCode = dialogSendCode.findViewById(R.id.buttonCancelCode);
+
+        diaEdtCode.requestFocus();
+        dialogSendCode.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                timer = new CountDownTimer(timeFuture, timeInterval) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        diaTxtSendCode2.setText("  " + millisUntilFinished/1000 + "");
+                        diaTxtSendCode2.setEnabled(false);
+                        diaTxtSendCode.setEnabled(false);
+                        if (millisUntilFinished/1000 == 0){
+                            timer.onFinish();
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        diaTxtSendCode2.setText("Click here!");
+                        diaTxtSendCode2.setEnabled(true);
+                        diaTxtSendCode.setEnabled(true);
+                    }
+                }.start();
+            }
+        });
+        diaTxtSendCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                code = getRandomNumberString();
+                Log.d("code", code);
+                TimerSingleton.timer.start();
+                sendMail(titleMail, messageMail, code, user.getEmail());
+                timer.start();
+            }
+        });
+        diaTxtSendCode2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                code = getRandomNumberString();
+                TimerSingleton.timer.start();
+                sendMail(titleMail, messageMail, code, user.getEmail());
+                timer.start();
+            }
+        });
+        diaBtnCancelCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSendCode.cancel();
+                TimerSingleton.timer.cancel();
+            }
+        });
+        diaBtnConfirmCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputCode = diaEdtCode.getText().toString().trim();
+                if(inputCode.equals("")){
+                    Toast.makeText(getApplicationContext(), "Bạn chưa nhập mã code!", Toast.LENGTH_SHORT).show();
+                }
+                if(countTestTime.equals("0")){
+                    Toast.makeText(getApplicationContext(), "Hết giờ!", Toast.LENGTH_SHORT).show();
+                }else if(inputCode.equals(code)){
+                    apiService.addUser(user).enqueue(new Callback<Integer>() {
+                        @Override
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            ProgressDialogF.hideLoading();
+                            if((response.body())!=0){
+                                Toast.makeText(RegisterActivity.this,"Đăng ký thành công!",Toast.LENGTH_SHORT).show();
+                                //Program.user=user;
+                                Intent intent=new Intent();
+                                intent.putExtra("#email",user.getEmail());
+                                setResult(RESULT_OK,intent);
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(RegisterActivity.this,"Đăng ký thất bại",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+                            Toast.makeText(RegisterActivity.this,"Có lỗi xảy ra! Đăng Ký thất bại",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+    public static String getRandomNumberString() {
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+
+        // this will convert any number sequence into 6 character.
+        return String.format("%06d", number);
+    }
+    public static void sendMail(final String title, final String message, final String code, final String email){
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender("ailatrieuphu.tt123@gmail.com",
+                            "ailatrieuphu123");
+                    sender.sendMail(title, message + " " + code,
+                            "ailatrieuphu.tt123@gmail.com", email);
+
+                } catch (Exception e) {
+                    Log.e("SendMail", e.getMessage(), e);
+
+                }
+            }
+
+        }).start();
     }
 
     public String checkEmail(String s) {

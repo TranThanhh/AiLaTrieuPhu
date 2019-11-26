@@ -6,6 +6,6 @@
         android:icon="@drawable/ic_navigation_view_content"/>
     <item
         android:id="@+id/navigationMember"
-        android:title="Thành viên"
+        android:title="Người chơi"
         android:icon="@drawable/ic_member"/>
 </menu>
