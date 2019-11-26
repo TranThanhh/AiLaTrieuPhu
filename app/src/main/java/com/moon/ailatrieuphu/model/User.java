@@ -8,16 +8,22 @@ public class User implements Serializable {
     private String nickname;
     private String password;
     private boolean adminRole;
+    private String createdTime;
+    private String updateTime;
+    private int diemCao;
 
     public User() {
     }
 
-    public User(int idUser, String email, String nickname, String password, boolean adminRole) {
+    public User(int idUser, String email, String nickname, String password, boolean adminRole, String createdTime, String updateTime, int diemCao) {
         this.idUser = idUser;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.adminRole = adminRole;
+        this.createdTime = createdTime;
+        this.updateTime = updateTime;
+        this.diemCao = diemCao;
     }
 
     public int getIdUser() {
@@ -58,5 +64,29 @@ public class User implements Serializable {
 
     public void setAdminRole(boolean adminRole) {
         this.adminRole = adminRole;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public int getDiemCao() {
+        return diemCao;
+    }
+
+    public void setDiemCao(int diemCao) {
+        this.diemCao = diemCao;
     }
 }

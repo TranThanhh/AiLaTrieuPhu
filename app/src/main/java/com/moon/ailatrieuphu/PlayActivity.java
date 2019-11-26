@@ -22,6 +22,7 @@ import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;
 import com.moon.ailatrieuphu.model.Diem;
+import com.moon.ailatrieuphu.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,8 +132,6 @@ public class PlayActivity extends AppCompatActivity {
 
         setCauHoi(c);
         countDownTime();
-//        idCauHoi=c.getIdCauHoi();
-//        getDapAnByIdCH(idCauHoi,c);
     }
 
     private void generateQuestionMedium(int m) {
@@ -144,10 +143,6 @@ public class PlayActivity extends AppCompatActivity {
 
         setCauHoi(c);
         countDownTime();
-
-//        idCauHoi=c.getIdCauHoi();
-//        Log.d("dapan id",idCauHoi+"");
-//        getDapAnByIdCH(idCauHoi,c);
     }
 
     private void generateQuestionHard(int m) {
@@ -158,9 +153,6 @@ public class PlayActivity extends AppCompatActivity {
 
         setCauHoi(c);
         countDownTime();
-//        idCauHoi=c.getIdCauHoi();
-//        getDapAnByIdCH(idCauHoi,c);
-
     }
 
     private void setCauHoi(CauHoi c){
@@ -183,25 +175,6 @@ public class PlayActivity extends AppCompatActivity {
             setDapAnRandom(btnB,btnC,btnA,B,C,A);
 
         }
-    }
-
-    private void getDapAnByIdCH(int idCauHoi,final CauHoi c){
-        ProgressDialogF.showLoading(PlayActivity.this);
-
-        apiService.getDapAn(idCauHoi).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
-                dapAn=response.body();
-                Log.d("dapan dung",dapAn);
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
     }
 
     private void setDapAnRandom(Button btn1, Button btn2, Button btn3, String s1, String s2, String s3) {
@@ -278,22 +251,6 @@ public class PlayActivity extends AppCompatActivity {
                 }else if(diem>=2000){
                     openDialogWin();
                 }
-
-//                apiService.getDapAn(idCauHoi).enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//                        Log.d("dap an dung",response.body());
-//                        displayRightAnswer(response.body());
-//                        if(diem<2000){
-//                            openDialogLost();
-//                        }else if(diem>=2000){
-//                            openDialogWin();
-//                        }
-//                    }
-//                    @Override
-//                    public void onFailure(Call<String> call, Throwable t) {
-//                    }
-//                });
             }
         };
         countDownTimer.start();
@@ -323,7 +280,6 @@ public class PlayActivity extends AppCompatActivity {
                 btnA.setBackgroundResource(R.drawable.background_answer_press);
                 countDownTimer.cancel();
                 returnResult("A");
-                //getDapAn(idCauHoi,"A");
             }
         });
         btnB.setOnClickListener(new View.OnClickListener() {
@@ -332,7 +288,6 @@ public class PlayActivity extends AppCompatActivity {
                 btnB.setBackgroundResource(R.drawable.background_answer_press);
                 countDownTimer.cancel();
                 returnResult("B");
-                //getDapAn(idCauHoi,"B");
             }
         });
         btnC.setOnClickListener(new View.OnClickListener() {
@@ -341,7 +296,6 @@ public class PlayActivity extends AppCompatActivity {
                 btnC.setBackgroundResource(R.drawable.background_answer_press);
                 countDownTimer.cancel();
                 returnResult("C");
-                //getDapAn(idCauHoi,"C");
             }
         });
         btnD.setOnClickListener(new View.OnClickListener() {
@@ -350,7 +304,6 @@ public class PlayActivity extends AppCompatActivity {
                 btnD.setBackgroundResource(R.drawable.background_answer_press);
                 countDownTimer.cancel();
                 returnResult("D");
-                //getDapAn(idCauHoi,"D");
             }
         });
         btnStopPlay.setOnClickListener(new View.OnClickListener() {
@@ -414,7 +367,7 @@ public class PlayActivity extends AppCompatActivity {
             }
         }else{
             displayRightAnswer(dapAn);
-            getHighScore();
+            diemCao = Program.user.getDiemCao();
             if(diem<2000) {
                 openDialogLost();
             }
@@ -524,54 +477,6 @@ public class PlayActivity extends AppCompatActivity {
             }
     }
 
-    private void getDapAn(int idCauHoi, String dapAnUser) {
-        apiService.getDapAnDung(idCauHoi,dapAnUser).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if(response.body().equalsIgnoreCase("true")){
-                    //Toast.makeText(PlayActivity.this,"Đúng!",Toast.LENGTH_SHORT).show();
-                    numberDoneQuestion++;
-                    generateQuestion(numberDoneQuestion);
-                    diem=mucdiem[numberDoneQuestion];
-                    txtHighScore.setText("Điểm hiện tại\n"+mucdiem[numberDoneQuestion]);
-
-                    if(numberDoneQuestion==16){
-                        Toast.makeText(PlayActivity.this,"Thắng!",Toast.LENGTH_SHORT).show();
-                        openDialogWin();
-                    }
-                }else{
-                    displayRightAnswer(response.body());
-                    getHighScore();
-                    if(diem<2000) {
-                        openDialogLost();
-                    }
-                    if(diem>=2000){
-                        openDialogWin();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
-    private void getHighScore(){
-        ProgressDialogF.showLoading(PlayActivity.this);
-        apiService.getHighScore(Program.user.getIdUser()).enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                ProgressDialogF.hideLoading();
-                diemCao=response.body();
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-
-            }
-        });
-    }
 
     private void openDialogWin() {
         final Dialog dialog=new Dialog(PlayActivity.this);
@@ -580,30 +485,7 @@ public class PlayActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
-
-        Diem d=new Diem();
-        d.setIdUser(Program.user.getIdUser());
-        d.setDiemCao(diem);
-        if(diem>diemCao){
-            ProgressDialogF.showLoading(PlayActivity.this);
-            apiService.modifyScore(d).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    ProgressDialogF.hideLoading();
-                    if(response.body().equalsIgnoreCase("success")){
-                        Log.d("diem",String.valueOf(diem));
-                    }else{
-                        Log.d("diem","fail");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
-                }
-            });
-        }
-
+        setHighScore();
 
         btnBackWin=dialog.findViewById(R.id.buttonBackWin);
         btnExitWin=dialog.findViewById(R.id.buttonExitWin);
@@ -648,6 +530,29 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
+    private void setHighScore() {
+        final User user=new User();
+        user.setIdUser(Program.user.getIdUser());
+        if(diem>diemCao){
+            user.setDiemCao(diem);
+            user.setUpdateTime(Program.getDateTimeNow());
+            ProgressDialogF.showLoading(this);
+            //call api to modify score
+            apiService.modifyScore(user).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    ProgressDialogF.hideLoading();
+                    Log.d("diem", diem + "");
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(PlayActivity.this,"Thay đổi điểm thất bại",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     private void openDialogLost() {
         final Dialog dialog=new Dialog(PlayActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -655,34 +560,7 @@ public class PlayActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
-
-        Diem d=new Diem();
-        d.setIdUser(Program.user.getIdUser());
-
-        if(diem>diemCao) {
-            d.setDiemCao(diem);
-        }else{
-            d.setDiemCao(diemCao);
-        }
-            ProgressDialogF.showLoading(PlayActivity.this);
-
-            apiService.modifyScore(d).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    ProgressDialogF.hideLoading();
-                    if (response.body().equalsIgnoreCase("success")) {
-                        Log.d("diem", String.valueOf(diem));
-                    } else {
-                        Log.d("diem", "fail");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
-                }
-            });
-
+        setHighScore();
 
         btnBackLost=dialog.findViewById(R.id.buttonBackLost);
         btnExitLost=dialog.findViewById(R.id.buttonExitLost);

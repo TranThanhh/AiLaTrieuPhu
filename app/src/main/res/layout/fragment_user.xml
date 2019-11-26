@@ -7,7 +7,7 @@
     android:background="#fff"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context=".adminpage.cauhoi.CauHoiFragment">
+    tools:context=".adminpage.user.UserFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:layout_marginEnd="5dp">
 
         <EditText
-            android:id="@+id/txtSearch"
+            android:id="@+id/textviewSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -27,7 +27,7 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/imgSearch"
+            android:id="@+id/imageviewSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -43,7 +43,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Không tìm thấy câu hỏi nào !!!"
+        android:text="Không tìm thấy user nào !!!"
         android:textAlignment="center"
         android:textSize="20sp"
         android:visibility="gone" />
@@ -54,7 +54,7 @@
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewCauHoi"
+            android:id="@+id/recyclerviewUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
 

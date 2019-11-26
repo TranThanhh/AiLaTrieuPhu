@@ -34,7 +34,7 @@ public class AddCauHoiFragment extends Fragment {
     private EditText edtCauHoi, edtCauA, edtCauB, edtCauC, edtCauD;
     private RadioButton rbtnDe, rbtnVua, rbtnKho, rbtnA, rbtnB, rbtnC, rbtnD;
     private RadioGroup rgrLoai, rgrDapAn;
-    private Button btnReload, btnEdit;
+    private Button btnReload, btnEdit, btnDelete;
     private ImageView imgvBack, imgvSave;
 
     private APIService apiService;
@@ -79,8 +79,6 @@ public class AddCauHoiFragment extends Fragment {
                 String cauB = edtCauB.getText().toString().trim();
                 String cauC = edtCauC.getText().toString().trim();
                 String cauD = edtCauD.getText().toString().trim();
-                int idLoaiCH = Integer.parseInt((v.findViewById(rgrLoai.getCheckedRadioButtonId())).getTag().toString());
-                String dapAnDung = (v.findViewById(rgrLoai.getCheckedRadioButtonId())).getTag().toString();
 
                 if (noiDung.equals("")) {
                     Toast.makeText(getContext(), "Nội dung câu hỏi không được để trống!", Toast.LENGTH_SHORT).show();
@@ -97,11 +95,14 @@ public class AddCauHoiFragment extends Fragment {
                 } else if (cauD.equals("")) {
                     Toast.makeText(getContext(), "Câu trả lời không được để trống!", Toast.LENGTH_SHORT).show();
                     edtCauD.requestFocus();
-                } else if(idLoaiCH==-1){
+                } else if(v.findViewById(rgrLoai.getCheckedRadioButtonId())==null){
                     Toast.makeText(getContext(), "Bạn chưa chọn loại câu hỏi!", Toast.LENGTH_SHORT).show();
-                } else if(dapAnDung.equals("-1")){
+                } else if(v.findViewById(rgrDapAn.getCheckedRadioButtonId())==null){
                     Toast.makeText(getContext(), "Bạn chưa chọn đáp án đúng!", Toast.LENGTH_SHORT).show();
                 } else {
+                    int idLoaiCH = Integer.parseInt((v.findViewById(rgrLoai.getCheckedRadioButtonId())).getTag().toString());
+                    String dapAnDung = (v.findViewById(rgrDapAn.getCheckedRadioButtonId())).getTag().toString();
+
                     CauHoi cauHoiNew=new CauHoi();
                     cauHoiNew.setNoiDung(noiDung);
                     cauHoiNew.setCauA(cauA);
@@ -134,6 +135,7 @@ public class AddCauHoiFragment extends Fragment {
                 ProgressDialogF.hideLoading();
                 if(response.body().equals("success")){
                     Toast.makeText(getContext(), "Thêm câu hỏi thành công!", Toast.LENGTH_SHORT).show();
+                    fragmentManager.popBackStack();
                 } else {
                     Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
                 }
@@ -186,6 +188,8 @@ public class AddCauHoiFragment extends Fragment {
         rgrDapAn = view.findViewById(R.id.radiogroupDapAn);
 
         btnReload = view.findViewById(R.id.buttonReload);
+        btnEdit = view.findViewById(R.id.buttonEdit);
+        btnDelete = view.findViewById(R.id.buttonDelete);
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
@@ -199,8 +203,14 @@ public class AddCauHoiFragment extends Fragment {
         rbtnD.setTag("D");
 
         if (getArguments() != null) {
+            btnEdit.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
+
             cauHoi = (CauHoi) getArguments().getSerializable("#cauhoi");
             if (cauHoi != null) recieveData(cauHoi);
+        } else{
+            btnEdit.setVisibility(View.GONE);
+            btnDelete.setVisibility(View.GONE);
         }
     }
 

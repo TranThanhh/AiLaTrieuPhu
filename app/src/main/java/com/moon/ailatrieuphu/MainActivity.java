@@ -198,30 +198,6 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void openDialogExit() {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_exit_app);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.show();
-        btnSubmitExit = dialog.findViewById(R.id.buttonExitGame);
-        btnCancelExit = dialog.findViewById(R.id.buttonCancelExit);
-        btnSubmitExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishAffinity();
-            }
-        });
-        btnCancelExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

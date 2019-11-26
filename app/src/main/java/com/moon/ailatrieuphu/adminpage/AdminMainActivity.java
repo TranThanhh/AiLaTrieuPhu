@@ -6,9 +6,6 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,13 +15,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.cauhoi.AddCauHoiFragment;
 import com.moon.ailatrieuphu.adminpage.cauhoi.CauHoiFragment;
-import com.moon.ailatrieuphu.adminpage.member.MemberFragment;
+import com.moon.ailatrieuphu.adminpage.user.UserFragment;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AdminMainActivity extends AppCompatActivity {
 
@@ -60,7 +53,7 @@ public class AdminMainActivity extends AppCompatActivity {
                         break;
                     case R.id.navigationMember:
                         if(fragmentManager.findFragmentByTag("MemberFrag")==null){
-                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin,new MemberFragment(),"MemberFrag").commit();
+                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin,new UserFragment(),"MemberFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(false);
                         break;
