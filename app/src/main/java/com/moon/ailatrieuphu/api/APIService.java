@@ -9,6 +9,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -48,12 +49,18 @@ public interface APIService {
 
     //----ADMIN---------
     //Get list all cauhoi.
-    @GET("admin/cauhoi/list")
+    @GET("admin/cauhoi/all/list")
     Call<List<CauHoi>> getAllCauHoi();
     //add new CauHoi
     @POST("admin/cauhoi/one")
     Call<String> addCauHoi(@Body CauHoi cauhoi);
 
-    @GET("admin/user/list")
+    @GET("admin/user/all/list")
     Call<List<User>> getAllUser();
+
+    @PUT("admin/user/one/adminrole")
+    Call<String> updateAdminRole(@Query("idUser") int idUser, @Query("updateTime") String updateTime);
+
+    @DELETE("admin/user/one")
+    Call<String> deleteUser(@Query("idUser") int idUser);
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @NonNull
     @Override
     public UserAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.item_user,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
         return new ViewHolder(view);
     }
 
@@ -52,48 +53,55 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public void refresh(List<User> cauHoiList) {
-        this.userList =cauHoiList;
+        this.userList = cauHoiList;
+        notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         private TextView tvEmail, tvIdUser, tvCreatedTime, tvUpdateTimeTitle, tvUpdateTime, tvNickname, tvDiemCao;
         private CardView cardViewUser;
+        private ImageView imgvAdmin;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvEmail=itemView.findViewById(R.id.textViewEmail);
-            tvIdUser=itemView.findViewById(R.id.textviewIdUser);
-            tvCreatedTime=itemView.findViewById(R.id.textviewCreatedTime);
-            tvUpdateTimeTitle=itemView.findViewById(R.id.textviewUpdateTimeTitle);
-            tvUpdateTime=itemView.findViewById(R.id.textviewUpdateTime);
-            tvNickname =itemView.findViewById(R.id.textviewNickname);
-            tvDiemCao =itemView.findViewById(R.id.textviewDiemCao);
-            cardViewUser=itemView.findViewById(R.id.cardviewUser);
+            tvEmail = itemView.findViewById(R.id.textViewEmail);
+            tvIdUser = itemView.findViewById(R.id.textviewIdUser);
+            tvCreatedTime = itemView.findViewById(R.id.textviewCreatedTime);
+            tvUpdateTimeTitle = itemView.findViewById(R.id.textviewUpdateTimeTitle);
+            tvUpdateTime = itemView.findViewById(R.id.textviewUpdateTime);
+            tvNickname = itemView.findViewById(R.id.textviewNickname);
+            tvDiemCao = itemView.findViewById(R.id.textviewDiemCao);
+            cardViewUser = itemView.findViewById(R.id.cardviewUser);
+            imgvAdmin = itemView.findViewById(R.id.imageviewAdmin);
 
-            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
-        public void bindData (int position) throws ParseException {
-            User user= userList.get(position);
+        public void bindData(int position) throws ParseException {
+            User user = userList.get(position);
 
             SimpleDateFormat dateIn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat dateOut = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-            tvIdUser.setText("#"+user.getIdUser()+":");
+            if (user.isAdminRole()) imgvAdmin.setVisibility(View.VISIBLE);
+            else imgvAdmin.setVisibility(View.INVISIBLE);
+
+            tvIdUser.setText("#" + user.getIdUser() + ":");
             tvCreatedTime.setText(dateOut.format(dateIn.parse(user.getCreatedTime())));
 
-            if(user.getUpdateTime()!=null){
+            if (user.getUpdateTime() != null) {
                 tvUpdateTimeTitle.setVisibility(View.VISIBLE);
+                tvUpdateTime.setVisibility(View.VISIBLE);
                 tvUpdateTime.setText(dateOut.format(dateIn.parse(user.getUpdateTime())));
-            } else{
+            } else {
                 tvUpdateTimeTitle.setVisibility(View.GONE);
                 tvUpdateTime.setVisibility(View.GONE);
             }
 
-            tvEmail.setText("Email: "+user.getEmail());
-            tvNickname.setText("Nickname: "+user.getNickname());
-            tvDiemCao.setText("Điểm cao: "+user.getDiemCao());
+            tvEmail.setText("Email: " + user.getEmail());
+            tvNickname.setText("Nickname: " + user.getNickname());
+            tvDiemCao.setText("Điểm cao: " + user.getDiemCao());
 
             if (position % 2 == 1) {
                 cardViewUser.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lightGray2));
@@ -104,13 +112,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
 
         @Override
-        public void onClick(View view) {
-            clickListener.onItemCLick(getAdapterPosition(),view);
+        public boolean onLongClick(View view) {
+            clickListener.onItemCLick(getAdapterPosition(), view);
+            return false;
         }
     }
 
-    public void setOnItemClick(ClickListener clickListener){
-        UserAdapter.clickListener=clickListener;
+    public void setOnItemClick(ClickListener clickListener) {
+        UserAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

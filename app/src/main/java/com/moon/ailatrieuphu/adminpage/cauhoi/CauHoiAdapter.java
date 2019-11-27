@@ -33,7 +33,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
     @NonNull
     @Override
     public CauHoiAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.item_cauhoi,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cauhoi, parent, false);
         return new ViewHolder(view);
     }
 
@@ -52,7 +52,8 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
     }
 
     public void refresh(List<CauHoi> cauHoiList) {
-        this.cauHoiList=cauHoiList;
+        this.cauHoiList = cauHoiList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -62,41 +63,49 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvIdCauHoi=itemView.findViewById(R.id.textviewIdCauHoi);
-            tvNoiDung=itemView.findViewById(R.id.textviewNoiDung);
-            cardViewCauHoi=itemView.findViewById(R.id.cardviewCauHoi);
-            tvCreatedTime=itemView.findViewById(R.id.textviewCreatedTime);
-            tvUpdateTime=itemView.findViewById(R.id.textviewUpdateTime);
-            tvUpdateTimeTitle=itemView.findViewById(R.id.textviewUpdateTimeTitle);
-            tvDapAnDung=itemView.findViewById(R.id.textviewDapAnDung);
+            tvIdCauHoi = itemView.findViewById(R.id.textviewIdCauHoi);
+            tvNoiDung = itemView.findViewById(R.id.textviewNoiDung);
+            cardViewCauHoi = itemView.findViewById(R.id.cardviewCauHoi);
+            tvCreatedTime = itemView.findViewById(R.id.textviewCreatedTime);
+            tvUpdateTime = itemView.findViewById(R.id.textviewUpdateTime);
+            tvUpdateTimeTitle = itemView.findViewById(R.id.textviewUpdateTimeTitle);
+            tvDapAnDung = itemView.findViewById(R.id.textviewDapAnDung);
 
             itemView.setOnClickListener(this);
         }
 
-        public void bindData (int position) throws ParseException {
-            CauHoi cauHoi=cauHoiList.get(position);
+        public void bindData(int position) throws ParseException {
+            CauHoi cauHoi = cauHoiList.get(position);
 
             SimpleDateFormat dateIn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat dateOut = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-            tvIdCauHoi.setText("#"+cauHoi.getIdCauHoi()+":");
-            tvNoiDung.setText(cauHoi.getNoiDung()+"");
+            tvIdCauHoi.setText("#" + cauHoi.getIdCauHoi() + ":");
+            tvNoiDung.setText(cauHoi.getNoiDung() + "");
 
             tvCreatedTime.setText(dateOut.format(dateIn.parse(cauHoi.getCreatedTime())));
 
-            if(cauHoi.getUpdateTime()!=null){
+            if (cauHoi.getUpdateTime() != null) {
                 tvUpdateTimeTitle.setVisibility(View.VISIBLE);
                 tvUpdateTime.setText(dateOut.format(dateIn.parse(cauHoi.getUpdateTime())));
-            } else{
+            } else {
                 tvUpdateTimeTitle.setVisibility(View.GONE);
                 tvUpdateTime.setVisibility(View.GONE);
             }
 
-            switch (cauHoi.getDapAnDung()){
-                case "A": tvDapAnDung.setText("A. "+cauHoi.getCauA()); break;
-                case "B": tvDapAnDung.setText("B. "+cauHoi.getCauB()); break;
-                case "C": tvDapAnDung.setText("C. "+cauHoi.getCauC()); break;
-                case "D": tvDapAnDung.setText("D. "+cauHoi.getCauD()); break;
+            switch (cauHoi.getDapAnDung()) {
+                case "A":
+                    tvDapAnDung.setText("A. " + cauHoi.getCauA());
+                    break;
+                case "B":
+                    tvDapAnDung.setText("B. " + cauHoi.getCauB());
+                    break;
+                case "C":
+                    tvDapAnDung.setText("C. " + cauHoi.getCauC());
+                    break;
+                case "D":
+                    tvDapAnDung.setText("D. " + cauHoi.getCauD());
+                    break;
             }
 
             if (position % 2 == 1) {
@@ -109,12 +118,12 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemCLick(getAdapterPosition(),view);
+            clickListener.onItemCLick(getAdapterPosition(), view);
         }
     }
 
-    public void setOnItemClick(ClickListener clickListener){
-        CauHoiAdapter.clickListener=clickListener;
+    public void setOnItemClick(ClickListener clickListener) {
+        CauHoiAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {
