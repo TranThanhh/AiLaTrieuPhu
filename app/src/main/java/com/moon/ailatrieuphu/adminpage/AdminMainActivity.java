@@ -12,10 +12,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.cauhoi.AddCauHoiFragment;
 import com.moon.ailatrieuphu.adminpage.cauhoi.CauHoiFragment;
-import com.moon.ailatrieuphu.adminpage.user.UserFragment;
+import com.moon.ailatrieuphu.adminpage.moderator.ModeratorFragment;
+import com.moon.ailatrieuphu.adminpage.player.PlayerFragment;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 
@@ -35,7 +37,8 @@ public class AdminMainActivity extends AppCompatActivity {
         setControl();
 
         toolbar.setTitle("Ai Là Triệu Phú ??");
-        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerAdmin,new CauHoiFragment(),"CauHoiFrag").commit();
+        if(Program.user.getRoleLevel()==2) bottomNav.getMenu().findItem(R.id.navigationModerator).setVisible(false);
+        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerAdmin, new CauHoiFragment(), "CauHoiFrag").commit();
 
         setEvent();
     }
@@ -44,19 +47,26 @@ public class AdminMainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.navigationQuestion:
-                        if(fragmentManager.findFragmentByTag("CauHoiFrag")==null){
-                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin,new CauHoiFragment(),"CauHoiFrag").commit();
+                        if (fragmentManager.findFragmentByTag("CauHoiFrag") == null) {
+                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new CauHoiFragment(), "CauHoiFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(true);
                         break;
-                    case R.id.navigationMember:
-                        if(fragmentManager.findFragmentByTag("MemberFrag")==null){
-                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin,new UserFragment(),"MemberFrag").commit();
+                    case R.id.navigationPlayer:
+                        if (fragmentManager.findFragmentByTag("MemberFrag") == null) {
+                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new PlayerFragment(), "MemberFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(false);
                         break;
+                    case R.id.navigationModerator:
+                        if (fragmentManager.findFragmentByTag("ModeratorFrag") == null) {
+                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new ModeratorFragment(), "ModeratorFrag").commit();
+                        }
+                        toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(false);
+                        break;
+
                 }
                 return true;
             }
@@ -66,12 +76,12 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     private void setControl() {
-        bottomNav =findViewById(R.id.bottomNavigationAdmin);
-        toolbar=findViewById(R.id.toolbarAdmin);
+        bottomNav = findViewById(R.id.bottomNavigationAdmin);
+        toolbar = findViewById(R.id.toolbarAdmin);
 
         setSupportActionBar(toolbar);
-        fragmentManager=getSupportFragmentManager();
-        apiService= APIConnect.getServer();
+        fragmentManager = getSupportFragmentManager();
+        apiService = APIConnect.getServer();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

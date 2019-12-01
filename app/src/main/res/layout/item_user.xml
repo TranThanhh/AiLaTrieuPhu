@@ -117,6 +117,7 @@
                     android:text="Điểm cao:"
                     android:textColor="#000"
                     android:textSize="17sp" />
+
             </LinearLayout>
 
             <ImageView
@@ -127,6 +128,16 @@
                 android:tooltipText="Admin"></ImageView>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textviewSoCauHoi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Số câu hỏi đã tạo:"
+            android:textColor="@color/lightGray"
+            android:textStyle="italic"
+            android:textSize="15sp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

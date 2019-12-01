@@ -7,7 +7,7 @@
     android:background="#fff"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context=".adminpage.cauhoi.AddCauHoiFragment">
+    tools:context=".adminpage.cauhoi.ViewCauHoiFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Thêm câu hỏi mới"
+            android:text="ID: "
             android:textColor="#000"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -46,28 +46,18 @@
             android:src="@drawable/ic_save"></ImageView>
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <TextView
+        android:id="@+id/edittextNoiDungCauHoi"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_weight="3"
-        android:paddingBottom="5dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="1000">
-
-        <EditText
-            android:id="@+id/edittextNoiDungCauHoi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="top"
-            android:hint="Nhập nội dung câu hỏi"
-            android:maxLength="1000"
-            android:paddingStart="10dp"
-            android:singleLine="false"
-            android:textSize="19sp"></EditText>
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_weight="2"
+        android:gravity="top"
+        android:maxLength="1000"
+        android:paddingStart="10dp"
+        android:singleLine="false"
+        android:text="Có bao nhiêu con gà trong cuốn sách của Lép tôn xờ tôi?"
+        android:textColor="#000"
+        android:textSize="20sp"></TextView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -156,92 +146,96 @@
             android:layout_weight="5"
             android:orientation="vertical">
 
-            <EditText
+            <TextView
                 android:id="@+id/edittextTraLoiA"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:hint="Nhập câu trả lời A"
                 android:maxLength="50"
                 android:singleLine="true"
-                android:textSize="18sp"></EditText>
+                android:text="Có 2 con"
+                android:textColor="#000"
+                android:textSize="20sp"></TextView>
 
-            <EditText
+            <TextView
                 android:id="@+id/edittextTraLoiB"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:hint="Nhập câu trả lời B"
                 android:maxLength="50"
                 android:singleLine="true"
-                android:textSize="18sp"></EditText>
+                android:text="Có 3 con"
+                android:textColor="#000"
+                android:textSize="20sp"></TextView>
 
-            <EditText
+            <TextView
                 android:id="@+id/edittextTraLoiC"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:hint="Nhập câu trả lời C"
                 android:maxLength="50"
                 android:singleLine="true"
-                android:textSize="18sp"></EditText>
+                android:text="Có 4 con"
+                android:textColor="#000"
+                android:textSize="20sp"></TextView>
 
-            <EditText
+            <TextView
                 android:id="@+id/edittextTraLoiD"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:hint="Nhập câu trả lời D"
                 android:maxLength="50"
                 android:singleLine="true"
-                android:textSize="18sp"></EditText>
+                android:text="Có 5 con"
+                android:textColor="#000"
+                android:textSize="20sp"></TextView>
 
         </LinearLayout>
 
-        <RadioGroup
-            android:id="@+id/radiogroupDapAn"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/radioA"
-                style="@android:style/Widget.CompoundButton.CheckBox"
+            <ImageView
+                android:id="@+id/imageviewCauA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"></RadioButton>
+                android:padding="17dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_true"></ImageView>
 
-            <RadioButton
-                android:id="@+id/radioB"
-                style="@android:style/Widget.CompoundButton.CheckBox"
+            <ImageView
+                android:id="@+id/imageviewCauB"
+                android:layout_width="match_parent"
+                android:padding="17dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_true"></ImageView>
+
+            <ImageView
+                android:id="@+id/imageviewCauC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"></RadioButton>
+                android:padding="17dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_true"></ImageView>
 
-            <RadioButton
-                android:id="@+id/radioC"
-                style="@android:style/Widget.CompoundButton.CheckBox"
+            <ImageView
+                android:id="@+id/imageviewCauD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"></RadioButton>
+                android:padding="17dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_true"></ImageView>
 
-            <RadioButton
-                android:id="@+id/radioD"
-                style="@android:style/Widget.CompoundButton.CheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"></RadioButton>
+        </LinearLayout>
 
-        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
@@ -301,13 +295,15 @@
         android:padding="10dp">
 
         <Button
-            android:id="@+id/buttonReload"
+            android:id="@+id/buttonDelete"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/backgroundButton"
-            android:text="Tải lại"
-            android:textColor="#000"
+            android:drawableLeft="@drawable/ic_delete"
+            android:gravity="center"
+            android:text="Xóa"
+            android:textAlignment="gravity"
             android:textSize="17sp"></Button>
 
     </LinearLayout>

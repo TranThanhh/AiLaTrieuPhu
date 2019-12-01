@@ -33,7 +33,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
     @NonNull
     @Override
     public CauHoiAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_cauhoi, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cau_hoi, parent, false);
         return new ViewHolder(view);
     }
 

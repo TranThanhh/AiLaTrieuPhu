@@ -188,7 +188,6 @@ public class AddCauHoiFragment extends Fragment {
         rgrDapAn = view.findViewById(R.id.radiogroupDapAn);
 
         btnReload = view.findViewById(R.id.buttonReload);
-        btnEdit = view.findViewById(R.id.buttonEdit);
         btnDelete = view.findViewById(R.id.buttonDelete);
 
         fragmentManager = getFragmentManager();

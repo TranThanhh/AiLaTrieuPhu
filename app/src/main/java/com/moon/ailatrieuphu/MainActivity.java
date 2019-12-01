@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -95,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 apiService.getUserLogin(user).enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
-                        Log.d("AAA", response.body().isAdminRole() + "");
-                        Log.d("AAA", response.body().getEmail() + "");
                         if (response.code() == 200) {
                             //login success
                             User user1 = response.body();
@@ -115,11 +112,11 @@ public class MainActivity extends AppCompatActivity {
                                 editor.remove("remember");
                                 editor.commit();
                             }
-                            if (Program.user.isAdminRole()) {
+                            if (Program.user.getRoleLevel()==0) {
+                                openDialogStart();
+                            } else {
                                 startActivity(new Intent(MainActivity.this, AdminMainActivity.class));
                                 finish();
-                            } else {
-                                openDialogStart();
                             }
                         } else {
                             Toast.makeText(MainActivity.this, "Sai Email hoặc Password. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
@@ -128,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "Có lỗi xảy ra. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
                     }
                 });
 

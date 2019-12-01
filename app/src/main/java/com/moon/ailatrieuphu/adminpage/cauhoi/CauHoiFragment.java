@@ -8,23 +8,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.moon.ailatrieuphu.MainActivity;
 import com.moon.ailatrieuphu.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
-import com.moon.ailatrieuphu.api.APIClient;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -120,7 +116,7 @@ public class CauHoiFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("#cauhoi", cauHoiList.get(position));
                 addCauHoiFragment.setArguments(bundle);
-                fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin,addCauHoiFragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, addCauHoiFragment).addToBackStack(null).commit();
             }
         });
     }

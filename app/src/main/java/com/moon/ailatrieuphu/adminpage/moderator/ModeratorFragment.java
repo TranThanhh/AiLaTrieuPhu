@@ -1,4 +1,4 @@
-package com.moon.ailatrieuphu.adminpage.user;
+package com.moon.ailatrieuphu.adminpage.moderator;
 
 
 import android.app.AlertDialog;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
+import com.moon.ailatrieuphu.adminpage.UserAdapter;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.User;
@@ -32,14 +33,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+public class ModeratorFragment extends Fragment {
 
-public class UserFragment extends Fragment {
-
-    private RecyclerView rvUser;
+    private RecyclerView rvMod;
     private TextView tvEmpty;
 
     private String keyWord = "";
-    private List<User> userList;
+    private List<User> modList;
     private boolean isLoaded = false;
     private int mPosition = 0;
 
@@ -50,7 +50,7 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_moderator, container, false);
 
         setControl(view);
 
@@ -58,51 +58,51 @@ public class UserFragment extends Fragment {
     }
 
     private void setControl(View view) {
-        rvUser = view.findViewById(R.id.recyclerviewUser);
+        rvMod = view.findViewById(R.id.recyclerviewModerator);
         tvEmpty = view.findViewById(R.id.textviewEmpty);
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
-        userList = new ArrayList<>();
+        modList = new ArrayList<>();
 
         reloadData();
     }
 
     private void reloadData() {
         if (keyWord.equals("")) {
-            getAllUser();
+            getAllModerator();
         } else {
             processSearch(keyWord);
         }
-        rvUser.scrollToPosition(mPosition);
+        rvMod.scrollToPosition(mPosition);
     }
 
     private void processSearch(String keyWord) {
     }
 
-    private void getAllUser() {
+    private void getAllModerator() {
         ProgressDialogF.showLoading(getContext());
-        apiService.getAllUser().enqueue(new Callback<List<User>>() {
+        apiService.getAllModerator().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 ProgressDialogF.hideLoading();
                 if (response.code() == 200) {
-                    userList = response.body();
-                    //userList.sort(Comparator.comparing(CauHoi::getIdCauHoi).reversed());
+                    modList = response.body();
+                    //modList.sort(Comparator.comparing(CauHoi::getIdCauHoi).reversed());
                     tvEmpty.setVisibility(View.GONE);
-                    rvUser.setVisibility(View.VISIBLE);
+                    rvMod.setVisibility(View.VISIBLE);
                 } else {
                     tvEmpty.setVisibility(View.VISIBLE);
-                    rvUser.setVisibility(View.GONE);
+                    rvMod.setVisibility(View.GONE);
                 }
                 if (!isLoaded) {
-                    userAdapter = new UserAdapter(userList, getContext());
-                    rvUser.setLayoutManager(new LinearLayoutManager(getContext()));
-                    rvUser.setAdapter(userAdapter);
+                    userAdapter = new UserAdapter(modList, getContext());
+                    rvMod.setLayoutManager(new LinearLayoutManager(getContext()));
+                    rvMod.setAdapter(userAdapter);
                     isLoaded = true;
                     setEvent();
                 } else {
-                    userAdapter.refresh(userList);
+                    userAdapter.refresh(modList);
                 }
             }
 
@@ -128,21 +128,17 @@ public class UserFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo
             menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (userList.get(mPosition).isAdminRole()) {
-            menu.add(0, v.getId(), 0, "Khôi phục mật khẩu");
-        } else {
-            menu.add(0, v.getId(), 0, "Cấp quyền Admin");
-            menu.add(0, v.getId(), 0, "Khôi phục mật khẩu");
-            menu.add(0, v.getId(), 0, "Xóa");
-        }
+        menu.add(0, v.getId(), 0, "Gỡ quyền điều hành");
+        menu.add(0, v.getId(), 0, "Khôi phục mật khẩu");
+        menu.add(0, v.getId(), 0, "Xóa");
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int idUser = userList.get(mPosition).getIdUser();
+        int idUser = modList.get(mPosition).getIdUser();
         switch (item.getTitle().toString()) {
-            case "Cấp quyền Admin":
-                updateAdminRole(idUser);
+            case "Gỡ quyền điều hành":
+                downgradeToUser(idUser);
                 break;
 
             case "Khôi phục mật khẩu":
@@ -150,18 +146,55 @@ public class UserFragment extends Fragment {
                 break;
 
             case "Xóa":
-                deleteMember(idUser);
+                deleteUser(idUser);
                 break;
         }
         return super.onContextItemSelected(item);
     }
 
-    private void deleteMember(int idUser) {
+    private void deleteUser(int idUser) {
+        ProgressDialogF.showLoading(getContext());
+        apiService.countCauHoiOfUser(idUser).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                ProgressDialogF.hideLoading();
+                if (response.body() == 0) {
+                    showDeleteAlertDialog(idUser);
+                } else {
+                    showDialogAlert(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                ProgressDialogF.hideLoading();
+                Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showDialogAlert(int count) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setCancelable(false);
+        dialog.setTitle("Không thể xóa!");
+        dialog.setIcon(R.mipmap.ic_launcher);
+        dialog.setMessage("Người điều hành có Nickname: " + modList.get(mPosition).getNickname() + "\nlà tác giả của " + count + " câu hỏi.\n" +
+                "Bạn không thể xóa người này!");
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void showDeleteAlertDialog(int idUser) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setCancelable(false);
-        alertDialog.setTitle("Xóa !!!");
+        alertDialog.setTitle("Xóa " + modList.get(mPosition).getEmail());
         alertDialog.setIcon(R.mipmap.ic_launcher);
-        alertDialog.setMessage("Người dùng có Nickname: " + userList.get(mPosition).getNickname()
+        alertDialog.setMessage("Người điều hành có Nickname: " + modList.get(mPosition).getNickname()
                 + " sẽ bị xóa. \nTất cả thông tin và điểm số sẽ bị mất."
                 + "\nBạn có chắc chắn không?");
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
@@ -197,9 +230,9 @@ public class UserFragment extends Fragment {
         alertDialog.show();
     }
 
-    private void updateAdminRole(int idUser) {
+    private void downgradeToUser(int idUser) {
         ProgressDialogF.showLoading(getContext());
-        apiService.updateAdminRole(idUser, Program.getDateTimeNow()).enqueue(new Callback<String>() {
+        apiService.updateRoleLevel(idUser, 0, Program.getDateTimeNow()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 ProgressDialogF.hideLoading();
