@@ -1,4 +1,4 @@
-package com.moon.ailatrieuphu.adminpage.user;
+package com.moon.ailatrieuphu.adminpage;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,18 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.moon.ailatrieuphu.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
+import com.moon.ailatrieuphu.api.APIConnect;
+import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
@@ -25,6 +33,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context context;
 
     private static ClickListener clickListener;
+
+    private APIService apiService = APIConnect.getServer();
 
     public UserAdapter(List<User> userList, Context context) {
         this.userList = userList;
@@ -59,7 +69,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
-        private TextView tvEmail, tvIdUser, tvCreatedTime, tvUpdateTimeTitle, tvUpdateTime, tvNickname, tvDiemCao;
+        private TextView tvEmail, tvIdUser, tvCreateTime, tvUpdateTimeTitle, tvUpdateTime, tvNickname, tvDiemCao, tvSoCauHoi;
         private CardView cardViewUser;
         private ImageView imgvAdmin;
 
@@ -67,11 +77,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             super(itemView);
             tvEmail = itemView.findViewById(R.id.textViewEmail);
             tvIdUser = itemView.findViewById(R.id.textviewIdUser);
-            tvCreatedTime = itemView.findViewById(R.id.textviewCreatedTime);
+            tvCreateTime = itemView.findViewById(R.id.textviewCreateTime);
             tvUpdateTimeTitle = itemView.findViewById(R.id.textviewUpdateTimeTitle);
             tvUpdateTime = itemView.findViewById(R.id.textviewUpdateTime);
             tvNickname = itemView.findViewById(R.id.textviewNickname);
             tvDiemCao = itemView.findViewById(R.id.textviewDiemCao);
+            tvSoCauHoi = itemView.findViewById(R.id.textviewSoCauHoi);
             cardViewUser = itemView.findViewById(R.id.cardviewUser);
             imgvAdmin = itemView.findViewById(R.id.imageviewAdmin);
 
@@ -84,11 +95,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             SimpleDateFormat dateIn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat dateOut = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-            if (user.isAdminRole()) imgvAdmin.setVisibility(View.VISIBLE);
-            else imgvAdmin.setVisibility(View.INVISIBLE);
+            if (user.getRoleLevel() == 0) imgvAdmin.setVisibility(View.INVISIBLE);
+            else imgvAdmin.setVisibility(View.VISIBLE);
 
             tvIdUser.setText("#" + user.getIdUser() + ":");
-            tvCreatedTime.setText(dateOut.format(dateIn.parse(user.getCreatedTime())));
+            tvCreateTime.setText(dateOut.format(dateIn.parse(user.getCreateTime())));
 
             if (user.getUpdateTime() != null) {
                 tvUpdateTimeTitle.setVisibility(View.VISIBLE);
@@ -102,6 +113,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             tvEmail.setText("Email: " + user.getEmail());
             tvNickname.setText("Nickname: " + user.getNickname());
             tvDiemCao.setText("Điểm cao: " + user.getDiemCao());
+
+            apiService.countCauHoiOfUser(user.getIdUser()).enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if (response.body().intValue() == 0) {
+                        tvSoCauHoi.setVisibility(View.GONE);
+                    } else {
+                        tvSoCauHoi.setVisibility(View.VISIBLE);
+                        tvSoCauHoi.setText("Số câu hỏi đã tạo: " + response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    ProgressDialogF.hideLoading();
+                    Toast.makeText(context, R.string.err_connect, Toast.LENGTH_SHORT).show();
+                }
+            });
 
             if (position % 2 == 1) {
                 cardViewUser.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lightGray2));

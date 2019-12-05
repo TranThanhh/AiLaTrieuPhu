@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Program {
-    //public static User user=new User(13,null,null,null,true,null,null,0);
-    public static User user;
+    public static User user=new User(55,null,null,null,null,null,0,1);
+    //public static User user;
     public static int diemCao;
 
     public static String getDateTimeNow() {

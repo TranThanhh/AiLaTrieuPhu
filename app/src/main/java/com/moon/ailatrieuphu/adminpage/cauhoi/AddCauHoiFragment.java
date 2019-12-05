@@ -34,7 +34,7 @@ public class AddCauHoiFragment extends Fragment {
     private EditText edtCauHoi, edtCauA, edtCauB, edtCauC, edtCauD;
     private RadioButton rbtnDe, rbtnVua, rbtnKho, rbtnA, rbtnB, rbtnC, rbtnD;
     private RadioGroup rgrLoai, rgrDapAn;
-    private Button btnReload, btnEdit, btnDelete;
+    private Button btnReload;
     private ImageView imgvBack, imgvSave;
 
     private APIService apiService;
@@ -115,11 +115,11 @@ public class AddCauHoiFragment extends Fragment {
 
                     if (getArguments() != null) {
                         cauHoiNew.setIdCauHoi(cauHoi.getIdCauHoi());
-                        cauHoiNew.setCreatedTime(cauHoi.getCreatedTime());
+                        cauHoiNew.setCreateTime(cauHoi.getCreateTime());
                         cauHoiNew.setUpdateTime(Program.getDateTimeNow());
                         editCauHoi(cauHoiNew);
                     } else {
-                        cauHoiNew.setCreatedTime(Program.getDateTimeNow());
+                        cauHoiNew.setCreateTime(Program.getDateTimeNow());
                         addCauHoi(cauHoiNew);
                     }
                 }
@@ -176,7 +176,7 @@ public class AddCauHoiFragment extends Fragment {
         rbtnVua = view.findViewById(R.id.radioVua);
         rbtnKho = view.findViewById(R.id.radioKho);
 
-        imgvSave = view.findViewById(R.id.imageviewSave);
+        imgvSave = view.findViewById(R.id.imageviewEdit);
         imgvBack = view.findViewById(R.id.imageviewBack);
 
         rbtnA = view.findViewById(R.id.radioA);
@@ -188,8 +188,6 @@ public class AddCauHoiFragment extends Fragment {
         rgrDapAn = view.findViewById(R.id.radiogroupDapAn);
 
         btnReload = view.findViewById(R.id.buttonReload);
-        btnEdit = view.findViewById(R.id.buttonEdit);
-        btnDelete = view.findViewById(R.id.buttonDelete);
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
@@ -203,14 +201,8 @@ public class AddCauHoiFragment extends Fragment {
         rbtnD.setTag("D");
 
         if (getArguments() != null) {
-            btnEdit.setVisibility(View.VISIBLE);
-            btnDelete.setVisibility(View.VISIBLE);
-
             cauHoi = (CauHoi) getArguments().getSerializable("#cauhoi");
             if (cauHoi != null) recieveData(cauHoi);
-        } else{
-            btnEdit.setVisibility(View.GONE);
-            btnDelete.setVisibility(View.GONE);
         }
     }
 

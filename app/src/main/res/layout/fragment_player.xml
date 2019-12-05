@@ -7,7 +7,7 @@
     android:background="#fff"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context=".adminpage.user.UserFragment">
+    tools:context=".adminpage.player.PlayerFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewUser"
+            android:id="@+id/recyclerviewPlayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
 

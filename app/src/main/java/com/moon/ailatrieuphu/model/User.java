@@ -7,23 +7,23 @@ public class User implements Serializable {
     private String email;
     private String nickname;
     private String password;
-    private boolean adminRole;
-    private String createdTime;
+    private String createTime;
     private String updateTime;
     private int diemCao;
+    private int roleLevel;
 
     public User() {
     }
 
-    public User(int idUser, String email, String nickname, String password, boolean adminRole, String createdTime, String updateTime, int diemCao) {
+    public User(int idUser, String email, String nickname, String password, String createTime, String updateTime, int diemCao, int roleLevel) {
         this.idUser = idUser;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.adminRole = adminRole;
-        this.createdTime = createdTime;
+        this.createTime = createTime;
         this.updateTime = updateTime;
         this.diemCao = diemCao;
+        this.roleLevel = roleLevel;
     }
 
     public int getIdUser() {
@@ -58,20 +58,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public boolean isAdminRole() {
-        return adminRole;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setAdminRole(boolean adminRole) {
-        this.adminRole = adminRole;
-    }
-
-    public String getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getUpdateTime() {
@@ -88,5 +80,13 @@ public class User implements Serializable {
 
     public void setDiemCao(int diemCao) {
         this.diemCao = diemCao;
+    }
+
+    public int getRoleLevel() {
+        return roleLevel;
+    }
+
+    public void setRoleLevel(int roleLevel) {
+        this.roleLevel = roleLevel;
     }
 }

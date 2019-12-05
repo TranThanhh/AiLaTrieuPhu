@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;
-import com.moon.ailatrieuphu.model.Diem;
 import com.moon.ailatrieuphu.model.User;
 
 import java.util.ArrayList;

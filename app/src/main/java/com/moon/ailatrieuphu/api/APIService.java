@@ -1,10 +1,8 @@
 package com.moon.ailatrieuphu.api;
 
 import com.moon.ailatrieuphu.model.CauHoi;
-import com.moon.ailatrieuphu.model.Diem;
 import com.moon.ailatrieuphu.model.User;
 
-import java.lang.ref.Reference;
 import java.util.List;
 
 import retrofit2.Call;
@@ -18,49 +16,50 @@ import retrofit2.http.Query;
 public interface APIService {
     //-----USER-----
     //check exists email, nickname
-    @POST("user/check")
+    @POST("/users-check")
     Call<String> checkUserExists(@Body User user);
 
     //register
-    @POST("user/addUser")
+    @POST("/users")
     Call<Integer> addUser(@Body User user);
 
     //login
-    @POST("user/login")
+    @POST("/users-login")
     Call<User> getUserLogin(@Body User user);
 
     //change password
-    @PUT("user/changePass")
+    @PUT("/users/password")
     Call<String> updatePassword(@Body User user);
 
-    //-----SCORE-----
-    //set default score
-    @POST("diem/setScore")
-    Call<String> setScore(@Body Diem diem);
-
     //Change Score
-    @PUT("user/modifyScore")
+    @PUT("/users/score")
     Call<String> modifyScore(@Body User user);
 
-    //-----CAU HOI-----
+    //----------------------------------CAU HOI----------------------------------------------
     //GET List cau hoi theo idLoaiCH
-    @GET("cauhoi/list2")
+    @GET("/cauhois/loai")
     Call<List<CauHoi>> getCauHoiByIdLoaiCH(@Query("idLoaiCH") int idLoaiCH);
 
-    //----ADMIN---------
+    //-----------------------------------ADMIN----------------------------------------------
     //Get list all cauhoi.
-    @GET("admin/cauhoi/all/list")
+    @GET("/admin/cauhois")
     Call<List<CauHoi>> getAllCauHoi();
     //add new CauHoi
-    @POST("admin/cauhoi/one")
+    @POST("/admin/cauhois")
     Call<String> addCauHoi(@Body CauHoi cauhoi);
-
-    @GET("admin/user/all/list")
-    Call<List<User>> getAllUser();
-
-    @PUT("admin/user/one/adminrole")
-    Call<String> updateAdminRole(@Query("idUser") int idUser, @Query("updateTime") String updateTime);
-
-    @DELETE("admin/user/one")
+    //get list user.
+    @GET("/admin/users-player")
+    Call<List<User>> getAllPlayer();
+    //get list moderator
+    @GET("/admin/users-moderator")
+    Call<List<User>> getAllModerator();
+    //update role a user.
+    @PUT("/admin/users/role-level")
+    Call<String> updateRoleLevel(@Query("idUser") int idUser,@Query("roleLevel") int roleLevel, @Query("updateTime") String updateTime);
+    //delete a user.
+    @DELETE("/admin/users")
     Call<String> deleteUser(@Query("idUser") int idUser);
+    //cout cauhois of user.
+    @POST("/admin/users/size-of-cauhoi")
+    Call<Integer> countCauHoiOfUser(@Query("idUser") int idUser);
 }

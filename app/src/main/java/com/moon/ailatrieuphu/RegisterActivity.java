@@ -21,7 +21,6 @@ import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.email.GMailSender;
 import com.moon.ailatrieuphu.email.TimerSingleton;
-import com.moon.ailatrieuphu.model.Diem;
 import com.moon.ailatrieuphu.model.User;
 
 import java.util.Random;
@@ -110,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setEmail(email.trim());
                 user.setNickname(nickname.trim());
                 user.setPassword(passwordEncrypt);
-                user.setDiemCao(0);
+                user.setCreateTime(Program.getDateTimeNow());
                 Log.d("email", user.getEmail());
 
                 apiService.checkUserExists(user).enqueue(new Callback<String>() {
