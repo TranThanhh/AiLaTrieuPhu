@@ -109,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setEmail(email.trim());
                 user.setNickname(nickname.trim());
                 user.setPassword(passwordEncrypt);
-                user.setCreatedTime(Program.getDateTimeNow());
+                user.setCreateTime(Program.getDateTimeNow());
                 Log.d("email", user.getEmail());
 
                 apiService.checkUserExists(user).enqueue(new Callback<String>() {

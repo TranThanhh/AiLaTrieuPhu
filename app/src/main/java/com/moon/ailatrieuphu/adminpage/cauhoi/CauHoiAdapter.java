@@ -58,7 +58,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView tvIdCauHoi, tvNoiDung, tvUpdateTime, tvCreatedTime, tvUpdateTimeTitle, tvDapAnDung;
+        private TextView tvIdCauHoi, tvNoiDung, tvUpdateTime, tvCreateTime, tvUpdateTimeTitle, tvDapAnDung;
         private CardView cardViewCauHoi;
 
         public ViewHolder(@NonNull View itemView) {
@@ -66,7 +66,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
             tvIdCauHoi = itemView.findViewById(R.id.textviewIdCauHoi);
             tvNoiDung = itemView.findViewById(R.id.textviewNoiDung);
             cardViewCauHoi = itemView.findViewById(R.id.cardviewCauHoi);
-            tvCreatedTime = itemView.findViewById(R.id.textviewCreatedTime);
+            tvCreateTime = itemView.findViewById(R.id.textviewCreateTime);
             tvUpdateTime = itemView.findViewById(R.id.textviewUpdateTime);
             tvUpdateTimeTitle = itemView.findViewById(R.id.textviewUpdateTimeTitle);
             tvDapAnDung = itemView.findViewById(R.id.textviewDapAnDung);
@@ -83,7 +83,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
             tvIdCauHoi.setText("#" + cauHoi.getIdCauHoi() + ":");
             tvNoiDung.setText(cauHoi.getNoiDung() + "");
 
-            tvCreatedTime.setText(dateOut.format(dateIn.parse(cauHoi.getCreatedTime())));
+            tvCreateTime.setText(dateOut.format(dateIn.parse(cauHoi.getCreateTime())));
 
             if (cauHoi.getUpdateTime() != null) {
                 tvUpdateTimeTitle.setVisibility(View.VISIBLE);

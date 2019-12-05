@@ -13,10 +13,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
-import com.moon.ailatrieuphu.api.APIClient;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.User;
@@ -71,7 +69,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
-        private TextView tvEmail, tvIdUser, tvCreatedTime, tvUpdateTimeTitle, tvUpdateTime, tvNickname, tvDiemCao, tvSoCauHoi;
+        private TextView tvEmail, tvIdUser, tvCreateTime, tvUpdateTimeTitle, tvUpdateTime, tvNickname, tvDiemCao, tvSoCauHoi;
         private CardView cardViewUser;
         private ImageView imgvAdmin;
 
@@ -79,7 +77,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             super(itemView);
             tvEmail = itemView.findViewById(R.id.textViewEmail);
             tvIdUser = itemView.findViewById(R.id.textviewIdUser);
-            tvCreatedTime = itemView.findViewById(R.id.textviewCreatedTime);
+            tvCreateTime = itemView.findViewById(R.id.textviewCreateTime);
             tvUpdateTimeTitle = itemView.findViewById(R.id.textviewUpdateTimeTitle);
             tvUpdateTime = itemView.findViewById(R.id.textviewUpdateTime);
             tvNickname = itemView.findViewById(R.id.textviewNickname);
@@ -101,7 +99,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             else imgvAdmin.setVisibility(View.VISIBLE);
 
             tvIdUser.setText("#" + user.getIdUser() + ":");
-            tvCreatedTime.setText(dateOut.format(dateIn.parse(user.getCreatedTime())));
+            tvCreateTime.setText(dateOut.format(dateIn.parse(user.getCreateTime())));
 
             if (user.getUpdateTime() != null) {
                 tvUpdateTimeTitle.setVisibility(View.VISIBLE);

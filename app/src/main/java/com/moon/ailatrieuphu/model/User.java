@@ -7,7 +7,7 @@ public class User implements Serializable {
     private String email;
     private String nickname;
     private String password;
-    private String createdTime;
+    private String createTime;
     private String updateTime;
     private int diemCao;
     private int roleLevel;
@@ -15,12 +15,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(int idUser, String email, String nickname, String password, String createdTime, String updateTime, int diemCao, int roleLevel) {
+    public User(int idUser, String email, String nickname, String password, String createTime, String updateTime, int diemCao, int roleLevel) {
         this.idUser = idUser;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.createdTime = createdTime;
+        this.createTime = createTime;
         this.updateTime = updateTime;
         this.diemCao = diemCao;
         this.roleLevel = roleLevel;
@@ -58,12 +58,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getCreatedTime() {
-        return createdTime;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getUpdateTime() {

@@ -37,13 +37,13 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/imageviewSave"
+            android:id="@+id/imageviewEdit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/backgroundButton"
             android:padding="10dp"
-            android:src="@drawable/ic_save"></ImageView>
+            android:src="@drawable/ic_edit"></ImageView>
     </LinearLayout>
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="19dp"
         android:layout_marginTop="10dp"
-        android:layout_weight="2"
+        android:layout_weight="1.5"
         android:gravity="top"
         android:maxLength="1000"
         android:paddingStart="10dp"
@@ -207,32 +207,32 @@
                 android:id="@+id/imageviewCauA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="17dp"
                 android:layout_weight="1"
+                android:padding="17dp"
                 android:src="@drawable/ic_true"></ImageView>
 
             <ImageView
                 android:id="@+id/imageviewCauB"
                 android:layout_width="match_parent"
-                android:padding="17dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:padding="17dp"
                 android:src="@drawable/ic_true"></ImageView>
 
             <ImageView
                 android:id="@+id/imageviewCauC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="17dp"
                 android:layout_weight="1"
+                android:padding="17dp"
                 android:src="@drawable/ic_true"></ImageView>
 
             <ImageView
                 android:id="@+id/imageviewCauD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="17dp"
                 android:layout_weight="1"
+                android:padding="17dp"
                 android:src="@drawable/ic_true"></ImageView>
 
         </LinearLayout>
@@ -242,7 +242,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:orientation="horizontal">
 
         <TextView
@@ -267,8 +267,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Dễ"
                 android:clickable="false"
+                android:text="Dễ"
                 android:textSize="20sp"></RadioButton>
 
             <RadioButton
@@ -276,8 +276,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Vừa"
                 android:clickable="false"
+                android:text="Vừa"
                 android:textSize="20sp"></RadioButton>
 
             <RadioButton
@@ -285,8 +285,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Khó"
                 android:clickable="false"
+                android:text="Khó"
                 android:textSize="20sp"></RadioButton>
         </RadioGroup>
     </LinearLayout>
@@ -297,18 +297,15 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         android:padding="10dp">
-
         <Button
             android:id="@+id/buttonDelete"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/backgroundButton"
-            android:drawableLeft="@drawable/ic_delete"
             android:gravity="center"
             android:text="Xóa"
             android:textAlignment="gravity"
             android:textSize="17sp"></Button>
-
     </LinearLayout>
 </LinearLayout>

@@ -11,7 +11,7 @@ public class CauHoi implements Serializable {
     private String cauD;
     private int idLoaiCH;
     private int idUser;
-    private String createdTime;
+    private String createTime;
     private String updateTime;
     private String dapAnDung;
 
@@ -28,7 +28,7 @@ public class CauHoi implements Serializable {
         this.idLoaiCH = idLoaiCH;
     }
 
-    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH, int idUser, String createdTime, String updateTime) {
+    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH, int idUser, String createTime, String updateTime) {
         this.idCauHoi = idCauHoi;
         this.noiDung = noiDung;
         this.cauA = cauA;
@@ -37,11 +37,11 @@ public class CauHoi implements Serializable {
         this.cauD = cauD;
         this.idLoaiCH = idLoaiCH;
         this.idUser = idUser;
-        this.createdTime = createdTime;
+        this.createTime = createTime;
         this.updateTime = updateTime;
     }
 
-    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH, int idUser, String createdTime, String updateTime, String dapAnDung) {
+    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH, int idUser, String createTime, String updateTime, String dapAnDung) {
         this.idCauHoi = idCauHoi;
         this.noiDung = noiDung;
         this.cauA = cauA;
@@ -50,7 +50,7 @@ public class CauHoi implements Serializable {
         this.cauD = cauD;
         this.idLoaiCH = idLoaiCH;
         this.idUser = idUser;
-        this.createdTime = createdTime;
+        this.createTime = createTime;
         this.updateTime = updateTime;
         this.dapAnDung = dapAnDung;
     }
@@ -119,12 +119,12 @@ public class CauHoi implements Serializable {
         this.idUser = idUser;
     }
 
-    public String getCreatedTime() {
-        return createdTime;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getUpdateTime() {

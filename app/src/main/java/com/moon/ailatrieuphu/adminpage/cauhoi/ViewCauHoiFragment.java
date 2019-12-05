@@ -8,20 +8,25 @@ import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.model.CauHoi;
 
 public class ViewCauHoiFragment extends Fragment {
 
     private TextView tvTitleCauHoi, tvNoiDung, tvCauA, tvCauB, tvCauC, tvCauD;
-    private ImageView imgvCauA, imgvCauB, imgvCauC, imgvCauD;
+    private ImageView imgvCauA, imgvCauB, imgvCauC, imgvCauD, imgvEdit, imgvBack;
     private RadioButton rbtnDe, rbtnVua, rbtnKho;
+    private Button btnDelete;
 
     private CauHoi cauHoi;
     private FragmentManager fragmentManager;
@@ -32,8 +37,35 @@ public class ViewCauHoiFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_view_cau_hoi, container, false);
         
         setControl(view);
-        
+
+        setEvent();
+
         return view;
+    }
+
+    private void setEvent() {
+        imgvEdit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddCauHoiFragment addCauHoiFragment = new AddCauHoiFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("#cauhoi", cauHoi);
+                addCauHoiFragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.fullscreenFragmentContainerAdmin, addCauHoiFragment).addToBackStack(null).commit();
+            }
+        });
+        imgvBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.popBackStack();
+            }
+        });
+        btnDelete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Xoa'", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setControl(View view) {
@@ -47,9 +79,13 @@ public class ViewCauHoiFragment extends Fragment {
         imgvCauB=view.findViewById(R.id.imageviewCauB);
         imgvCauC=view.findViewById(R.id.imageviewCauC);
         imgvCauD=view.findViewById(R.id.imageviewCauD);
+        imgvEdit=view.findViewById(R.id.imageviewEdit);
+        imgvBack=view.findViewById(R.id.imageviewBack);
         rbtnDe=view.findViewById(R.id.radiobuttonDe);
         rbtnVua=view.findViewById(R.id.radiobuttonVua);
         rbtnKho=view.findViewById(R.id.radiobuttonKho);
+
+        btnDelete=view.findViewById(R.id.buttonDelete);
 
         fragmentManager=getFragmentManager();
 
@@ -59,6 +95,16 @@ public class ViewCauHoiFragment extends Fragment {
         } else{
             Toast.makeText(getContext(), "Có lỗi xảy ra!", Toast.LENGTH_SHORT).show();
             fragmentManager.popBackStack();
+        }
+
+        if(Program.user.getRoleLevel()==2){
+            if(Program.user.getIdUser()==cauHoi.getIdUser()){
+                imgvEdit.setVisibility(View.VISIBLE);
+                btnDelete.setVisibility(View.VISIBLE);
+            } else {
+                imgvEdit.setVisibility(View.INVISIBLE);
+                btnDelete.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
