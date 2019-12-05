@@ -16,50 +16,50 @@ import retrofit2.http.Query;
 public interface APIService {
     //-----USER-----
     //check exists email, nickname
-    @POST("/user/check")
+    @POST("/users-check")
     Call<String> checkUserExists(@Body User user);
 
     //register
-    @POST("/user/addUser")
+    @POST("/users")
     Call<Integer> addUser(@Body User user);
 
     //login
-    @POST("/user/login")
+    @POST("/users-login")
     Call<User> getUserLogin(@Body User user);
 
     //change password
-    @PUT("/user/changePass")
+    @PUT("/users/password")
     Call<String> updatePassword(@Body User user);
 
     //Change Score
-    @PUT("/user/modifyScore")
+    @PUT("/users/score")
     Call<String> modifyScore(@Body User user);
 
     //----------------------------------CAU HOI----------------------------------------------
     //GET List cau hoi theo idLoaiCH
-    @GET("/cauhoi/list2")
+    @GET("/cauhois/loai")
     Call<List<CauHoi>> getCauHoiByIdLoaiCH(@Query("idLoaiCH") int idLoaiCH);
 
     //-----------------------------------ADMIN----------------------------------------------
     //Get list all cauhoi.
-    @GET("/admin/cauhoi/all")
+    @GET("/admin/cauhois")
     Call<List<CauHoi>> getAllCauHoi();
     //add new CauHoi
-    @POST("/admin/cauhoi/one")
+    @POST("/admin/cauhois")
     Call<String> addCauHoi(@Body CauHoi cauhoi);
     //get list user.
-    @GET("/admin/user/all-player")
+    @GET("/admin/users-player")
     Call<List<User>> getAllPlayer();
     //get list moderator
-    @GET("/admin/user/all-moderator")
+    @GET("/admin/users-moderator")
     Call<List<User>> getAllModerator();
     //update role a user.
-    @PUT("/admin/user/one/rolelevel")
+    @PUT("/admin/users/role-level")
     Call<String> updateRoleLevel(@Query("idUser") int idUser,@Query("roleLevel") int roleLevel, @Query("updateTime") String updateTime);
     //delete a user.
-    @DELETE("/admin/user/one")
+    @DELETE("/admin/users")
     Call<String> deleteUser(@Query("idUser") int idUser);
     //cout cauhois of user.
-    @POST("/admin/user/size-of-cauhoi")
+    @POST("/admin/users/size-of-cauhoi")
     Call<Integer> countCauHoiOfUser(@Query("idUser") int idUser);
 }

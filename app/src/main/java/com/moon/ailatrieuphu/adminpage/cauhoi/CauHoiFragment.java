@@ -112,14 +112,12 @@ public class CauHoiFragment extends Fragment {
             @Override
             public void onItemCLick(int position, View v) {
                 //Toast.makeText(getContext(), cauHoiList.get(position).getIdCauHoi()+"", Toast.LENGTH_SHORT).show();
-                AddCauHoiFragment addCauHoiFragment = new AddCauHoiFragment();
+                ViewCauHoiFragment viewCauHoiFragment = new ViewCauHoiFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("#cauhoi", cauHoiList.get(position));
-                addCauHoiFragment.setArguments(bundle);
-                fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, addCauHoiFragment).addToBackStack(null).commit();
+                viewCauHoiFragment.setArguments(bundle);
+                fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, viewCauHoiFragment).addToBackStack(null).commit();
             }
         });
     }
-
-
 }

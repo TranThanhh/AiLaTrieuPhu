@@ -29,7 +29,7 @@
             android:id="@+id/textviewTitleCauHoi"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="ID: "
             android:textColor="#000"
@@ -47,9 +47,10 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/edittextNoiDungCauHoi"
+        android:id="@+id/textviewNoiDung"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="2"
         android:gravity="top"
         android:maxLength="1000"
@@ -95,14 +96,14 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:text="A."
                 android:textColor="#000"
                 android:textSize="20sp"
@@ -112,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:text="B."
                 android:textColor="#000"
                 android:textSize="20sp"
@@ -122,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:text="C."
                 android:textColor="#000"
                 android:textSize="20sp"
@@ -132,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:text="D."
                 android:textColor="#000"
                 android:textSize="20sp"
@@ -143,15 +144,15 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="4"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/edittextTraLoiA"
+                android:id="@+id/textviewCauA"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:maxLength="50"
                 android:singleLine="true"
                 android:text="Có 2 con"
@@ -159,11 +160,11 @@
                 android:textSize="20sp"></TextView>
 
             <TextView
-                android:id="@+id/edittextTraLoiB"
+                android:id="@+id/textviewCauB"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:maxLength="50"
                 android:singleLine="true"
                 android:text="Có 3 con"
@@ -171,11 +172,11 @@
                 android:textSize="20sp"></TextView>
 
             <TextView
-                android:id="@+id/edittextTraLoiC"
+                android:id="@+id/textviewCauC"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:maxLength="50"
                 android:singleLine="true"
                 android:text="Có 4 con"
@@ -183,11 +184,11 @@
                 android:textSize="20sp"></TextView>
 
             <TextView
-                android:id="@+id/edittextTraLoiD"
+                android:id="@+id/textviewCauD"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:maxLength="50"
                 android:singleLine="true"
                 android:text="Có 5 con"
@@ -262,27 +263,30 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioDe"
+                android:id="@+id/radiobuttonDe"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Dễ"
+                android:clickable="false"
                 android:textSize="20sp"></RadioButton>
 
             <RadioButton
-                android:id="@+id/radioVua"
+                android:id="@+id/radiobuttonVua"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Vừa"
+                android:clickable="false"
                 android:textSize="20sp"></RadioButton>
 
             <RadioButton
-                android:id="@+id/radioKho"
+                android:id="@+id/radiobuttonKho"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Khó"
+                android:clickable="false"
                 android:textSize="20sp"></RadioButton>
         </RadioGroup>
     </LinearLayout>
