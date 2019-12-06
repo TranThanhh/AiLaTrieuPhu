@@ -87,6 +87,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
 
             if (cauHoi.getUpdateTime() != null) {
                 tvUpdateTimeTitle.setVisibility(View.VISIBLE);
+                tvUpdateTime.setVisibility(View.VISIBLE);
                 tvUpdateTime.setText(dateOut.format(dateIn.parse(cauHoi.getUpdateTime())));
             } else {
                 tvUpdateTimeTitle.setVisibility(View.GONE);

@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.api.APIConnect;
@@ -95,8 +96,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             SimpleDateFormat dateIn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat dateOut = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-            if (user.getRoleLevel() == 0) imgvAdmin.setVisibility(View.INVISIBLE);
-            else imgvAdmin.setVisibility(View.VISIBLE);
+            if (user.getRoleLevel() == 0) {
+                imgvAdmin.setVisibility(View.INVISIBLE);
+                tvDiemCao.setVisibility(View.VISIBLE);
+                tvDiemCao.setText("Điểm cao: " + user.getDiemCao());
+            } else {
+                imgvAdmin.setVisibility(View.VISIBLE);
+                tvDiemCao.setVisibility(View.INVISIBLE);
+            }
 
             tvIdUser.setText("#" + user.getIdUser() + ":");
             tvCreateTime.setText(dateOut.format(dateIn.parse(user.getCreateTime())));
@@ -112,7 +119,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
             tvEmail.setText("Email: " + user.getEmail());
             tvNickname.setText("Nickname: " + user.getNickname());
-            tvDiemCao.setText("Điểm cao: " + user.getDiemCao());
 
             apiService.countCauHoiOfUser(user.getIdUser()).enqueue(new Callback<Integer>() {
                 @Override

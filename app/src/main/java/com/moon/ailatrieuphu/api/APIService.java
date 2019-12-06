@@ -43,10 +43,17 @@ public interface APIService {
     //-----------------------------------ADMIN----------------------------------------------
     //Get list all cauhoi.
     @GET("/admin/cauhois")
-    Call<List<CauHoi>> getAllCauHoi();
+    Call<List<CauHoi>> getAllCauHoiActive();
     //add new CauHoi
     @POST("/admin/cauhois")
-    Call<String> addCauHoi(@Body CauHoi cauhoi);
+    Call<String> addCauHoi(@Body CauHoi cauHoiNew);
+    // edit cauhoi.
+    @PUT("/admin/cauhois")
+    Call<String> updateCauHoi(@Body CauHoi cauHoiEdit);
+    //delete cauhoi.
+    @DELETE("/admin/cauhois")
+    Call<String> deleteCauHoi(@Query("idCauHoi") int idCauHoi);
+
     //get list user.
     @GET("/admin/users-player")
     Call<List<User>> getAllPlayer();
