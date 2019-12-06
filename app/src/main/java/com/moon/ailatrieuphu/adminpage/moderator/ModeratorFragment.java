@@ -41,7 +41,6 @@ public class ModeratorFragment extends Fragment {
     private String keyWord = "";
     private List<User> modList;
     private boolean isLoaded = false;
-    private int mPosition = 0;
 
     private APIService apiService;
     private UserAdapter userAdapter;
@@ -74,7 +73,7 @@ public class ModeratorFragment extends Fragment {
         } else {
             processSearch(keyWord);
         }
-        rvMod.scrollToPosition(mPosition);
+        rvMod.scrollToPosition(Program.positionModerator);
     }
 
     private void processSearch(String keyWord) {
@@ -118,7 +117,7 @@ public class ModeratorFragment extends Fragment {
         userAdapter.setOnItemClick(new UserAdapter.ClickListener() {
             @Override
             public void onItemCLick(int position, View v) {
-                mPosition = position;
+                Program.positionModerator = position;
                 registerForContextMenu(v);
             }
         });
@@ -135,7 +134,7 @@ public class ModeratorFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int idUser = modList.get(mPosition).getIdUser();
+        int idUser = modList.get(Program.positionModerator).getIdUser();
         switch (item.getTitle().toString()) {
             case "Gỡ quyền điều hành":
                 downgradeToUser(idUser);
@@ -178,7 +177,7 @@ public class ModeratorFragment extends Fragment {
         dialog.setCancelable(false);
         dialog.setTitle("Không thể xóa!");
         dialog.setIcon(R.mipmap.ic_launcher);
-        dialog.setMessage("Người điều hành có Nickname: " + modList.get(mPosition).getNickname() + "\nlà tác giả của " + count + " câu hỏi.\n" +
+        dialog.setMessage("Người điều hành có Nickname: " + modList.get(Program.positionModerator).getNickname() + "\nlà tác giả của " + count + " câu hỏi.\n" +
                 "Bạn không thể xóa người này!");
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -192,9 +191,9 @@ public class ModeratorFragment extends Fragment {
     private void showDeleteAlertDialog(int idUser) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setCancelable(false);
-        alertDialog.setTitle("Xóa " + modList.get(mPosition).getEmail());
+        alertDialog.setTitle("Xóa " + modList.get(Program.positionModerator).getEmail());
         alertDialog.setIcon(R.mipmap.ic_launcher);
-        alertDialog.setMessage("Người điều hành có Nickname: " + modList.get(mPosition).getNickname()
+        alertDialog.setMessage("Người điều hành có Nickname: " + modList.get(Program.positionModerator).getNickname()
                 + " sẽ bị xóa. \nTất cả thông tin và điểm số sẽ bị mất."
                 + "\nBạn có chắc chắn không?");
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {

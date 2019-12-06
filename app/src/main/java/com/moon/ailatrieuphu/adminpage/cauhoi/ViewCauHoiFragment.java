@@ -1,6 +1,8 @@
 package com.moon.ailatrieuphu.adminpage.cauhoi;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,8 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moon.ailatrieuphu.Program;
+import com.moon.ailatrieuphu.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
+import com.moon.ailatrieuphu.api.APIClient;
+import com.moon.ailatrieuphu.api.APIConnect;
+import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ViewCauHoiFragment extends Fragment {
 
@@ -30,6 +40,8 @@ public class ViewCauHoiFragment extends Fragment {
 
     private CauHoi cauHoi;
     private FragmentManager fragmentManager;
+    private CauHoiFragment cauHoiFragment;
+    private APIService apiService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +63,8 @@ public class ViewCauHoiFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("#cauhoi", cauHoi);
                 addCauHoiFragment.setArguments(bundle);
-                fragmentManager.beginTransaction().replace(R.id.fullscreenFragmentContainerAdmin, addCauHoiFragment).addToBackStack(null).commit();
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, addCauHoiFragment).addToBackStack(null).commit();
             }
         });
         imgvBack.setOnClickListener(new OnClickListener() {
@@ -63,9 +76,49 @@ public class ViewCauHoiFragment extends Fragment {
         btnDelete.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Xoa'", Toast.LENGTH_SHORT).show();
+                showDeleteAlertDialog(cauHoi.getIdCauHoi());
             }
         });
+    }
+
+    private void showDeleteAlertDialog(int idCauHoi) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setCancelable(false);
+        alertDialog.setTitle("Xóa câu hỏi có ID: "+idCauHoi);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
+        alertDialog.setMessage("Câu hỏi này sẽ bị xóa, bạn có chắc chắn không?");
+        alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ProgressDialogF.showLoading(getContext());
+                apiService.deleteUser(idCauHoi).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        ProgressDialogF.hideLoading();
+                        if (response.body().equals("success")) {
+                            Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                            fragmentManager.popBackStack();
+                            cauHoiFragment.reloadData();
+                        } else {
+                            Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        ProgressDialogF.hideLoading();
+                        Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
     private void setControl(View view) {
@@ -88,6 +141,9 @@ public class ViewCauHoiFragment extends Fragment {
         btnDelete=view.findViewById(R.id.buttonDelete);
 
         fragmentManager=getFragmentManager();
+        cauHoiFragment=(CauHoiFragment) fragmentManager.findFragmentByTag("CauHoiFrag");
+        apiService= APIConnect.getServer();
+
 
         if (getArguments() != null) {
             cauHoi = (CauHoi) getArguments().getSerializable("#cauhoi");

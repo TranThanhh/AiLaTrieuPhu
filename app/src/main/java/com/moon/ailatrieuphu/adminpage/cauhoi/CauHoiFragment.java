@@ -39,7 +39,7 @@ public class CauHoiFragment extends Fragment {
 
     private APIService apiService;
     private CauHoiAdapter cauHoiAdapter;
-    private FragmentManager fragmentManager;
+    public FragmentManager fragmentManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,12 +62,13 @@ public class CauHoiFragment extends Fragment {
         reloadData();
     }
 
-    private void reloadData() {
+    public void reloadData() {
         if (keyWord.equals("")) {
             getListCauHoi();
         } else {
             processSearch(keyWord);
         }
+        rvCauHoi.scrollToPosition(Program.positionCauHoi);
     }
 
     private void processSearch(String keyWord) {
@@ -113,6 +114,7 @@ public class CauHoiFragment extends Fragment {
             @Override
             public void onItemCLick(int position, View v) {
                 //Toast.makeText(getContext(), cauHoiList.get(position).getIdCauHoi()+"", Toast.LENGTH_SHORT).show();
+                Program.positionCauHoi=position;
                 ViewCauHoiFragment viewCauHoiFragment = new ViewCauHoiFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("#cauhoi", cauHoiList.get(position));

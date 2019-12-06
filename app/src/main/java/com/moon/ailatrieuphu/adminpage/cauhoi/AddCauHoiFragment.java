@@ -1,6 +1,7 @@
 package com.moon.ailatrieuphu.adminpage.cauhoi;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,7 @@ public class AddCauHoiFragment extends Fragment {
     private Button btnReload;
     private ImageView imgvBack, imgvSave;
 
+    private CauHoiFragment cauHoiFragment;
     private APIService apiService;
     private FragmentManager fragmentManager;
     private CauHoi cauHoi = null;
@@ -95,15 +97,15 @@ public class AddCauHoiFragment extends Fragment {
                 } else if (cauD.equals("")) {
                     Toast.makeText(getContext(), "Câu trả lời không được để trống!", Toast.LENGTH_SHORT).show();
                     edtCauD.requestFocus();
-                } else if(v.findViewById(rgrLoai.getCheckedRadioButtonId())==null){
+                } else if (v.findViewById(rgrLoai.getCheckedRadioButtonId()) == null) {
                     Toast.makeText(getContext(), "Bạn chưa chọn loại câu hỏi!", Toast.LENGTH_SHORT).show();
-                } else if(v.findViewById(rgrDapAn.getCheckedRadioButtonId())==null){
+                } else if (v.findViewById(rgrDapAn.getCheckedRadioButtonId()) == null) {
                     Toast.makeText(getContext(), "Bạn chưa chọn đáp án đúng!", Toast.LENGTH_SHORT).show();
                 } else {
                     int idLoaiCH = Integer.parseInt((v.findViewById(rgrLoai.getCheckedRadioButtonId())).getTag().toString());
                     String dapAnDung = (v.findViewById(rgrDapAn.getCheckedRadioButtonId())).getTag().toString();
 
-                    CauHoi cauHoiNew=new CauHoi();
+                    CauHoi cauHoiNew = new CauHoi();
                     cauHoiNew.setNoiDung(noiDung);
                     cauHoiNew.setCauA(cauA);
                     cauHoiNew.setCauB(cauB);
@@ -111,14 +113,15 @@ public class AddCauHoiFragment extends Fragment {
                     cauHoiNew.setCauD(cauD);
                     cauHoiNew.setIdLoaiCH(idLoaiCH);
                     cauHoiNew.setDapAnDung(dapAnDung);
-                    cauHoiNew.setIdUser(Program.user.getIdUser());
 
                     if (getArguments() != null) {
+                        cauHoiNew.setIdUser(cauHoi.getIdUser());
                         cauHoiNew.setIdCauHoi(cauHoi.getIdCauHoi());
                         cauHoiNew.setCreateTime(cauHoi.getCreateTime());
                         cauHoiNew.setUpdateTime(Program.getDateTimeNow());
                         editCauHoi(cauHoiNew);
                     } else {
+                        cauHoiNew.setIdUser(Program.user.getIdUser());
                         cauHoiNew.setCreateTime(Program.getDateTimeNow());
                         addCauHoi(cauHoiNew);
                     }
@@ -133,9 +136,10 @@ public class AddCauHoiFragment extends Fragment {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 ProgressDialogF.hideLoading();
-                if(response.body().equals("success")){
+                if (response.body().equals("success")) {
                     Toast.makeText(getContext(), "Thêm câu hỏi thành công!", Toast.LENGTH_SHORT).show();
                     fragmentManager.popBackStack();
+                    cauHoiFragment.reloadData();
                 } else {
                     Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
                 }
@@ -150,7 +154,25 @@ public class AddCauHoiFragment extends Fragment {
     }
 
     private void editCauHoi(CauHoi cauHoiEdit) {
+        ProgressDialogF.showLoading(getContext());
+        apiService.updateCauHoi(cauHoiEdit).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                ProgressDialogF.hideLoading();
+                if (response.body().equals("success")) {
+                    Toast.makeText(getContext(), "Sửa câu hỏi thành công!", Toast.LENGTH_SHORT).show();
+                    fragmentManager.popBackStack();
+                    cauHoiFragment.reloadData();
+                } else {
+                    Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void clearFields() {
@@ -191,6 +213,7 @@ public class AddCauHoiFragment extends Fragment {
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
+        cauHoiFragment = (CauHoiFragment) fragmentManager.findFragmentByTag("CauHoiFrag");
 
         rbtnDe.setTag(1);
         rbtnVua.setTag(2);
