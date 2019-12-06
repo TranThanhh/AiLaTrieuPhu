@@ -76,7 +76,7 @@ public class CauHoiFragment extends Fragment {
 
     private void getListCauHoi() {
         ProgressDialogF.showLoading(getContext());
-        apiService.getAllCauHoi().enqueue(new Callback<List<CauHoi>>() {
+        apiService.getAllCauHoiActive().enqueue(new Callback<List<CauHoi>>() {
             @Override
             public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
                 ProgressDialogF.hideLoading();

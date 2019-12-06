@@ -11,11 +11,12 @@ public class User implements Serializable {
     private String updateTime;
     private int diemCao;
     private int roleLevel;
+    private boolean deleted;
 
     public User() {
     }
 
-    public User(int idUser, String email, String nickname, String password, String createTime, String updateTime, int diemCao, int roleLevel) {
+    public User(int idUser, String email, String nickname, String password, String createTime, String updateTime, int diemCao, int roleLevel, boolean deleted) {
         this.idUser = idUser;
         this.email = email;
         this.nickname = nickname;
@@ -24,6 +25,7 @@ public class User implements Serializable {
         this.updateTime = updateTime;
         this.diemCao = diemCao;
         this.roleLevel = roleLevel;
+        this.deleted = deleted;
     }
 
     public int getIdUser() {
@@ -88,5 +90,13 @@ public class User implements Serializable {
 
     public void setRoleLevel(int roleLevel) {
         this.roleLevel = roleLevel;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

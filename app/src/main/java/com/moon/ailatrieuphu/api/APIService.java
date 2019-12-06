@@ -43,7 +43,7 @@ public interface APIService {
     //-----------------------------------ADMIN----------------------------------------------
     //Get list all cauhoi.
     @GET("/admin/cauhois")
-    Call<List<CauHoi>> getAllCauHoi();
+    Call<List<CauHoi>> getAllCauHoiActive();
     //add new CauHoi
     @POST("/admin/cauhois")
     Call<String> addCauHoi(@Body CauHoi cauHoiNew);

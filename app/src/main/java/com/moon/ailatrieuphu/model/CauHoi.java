@@ -14,34 +14,12 @@ public class CauHoi implements Serializable {
     private String createTime;
     private String updateTime;
     private String dapAnDung;
+    private boolean deleted;
 
     public CauHoi() {
     }
 
-    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH) {
-        this.idCauHoi = idCauHoi;
-        this.noiDung = noiDung;
-        this.cauA = cauA;
-        this.cauB = cauB;
-        this.cauC = cauC;
-        this.cauD = cauD;
-        this.idLoaiCH = idLoaiCH;
-    }
-
-    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH, int idUser, String createTime, String updateTime) {
-        this.idCauHoi = idCauHoi;
-        this.noiDung = noiDung;
-        this.cauA = cauA;
-        this.cauB = cauB;
-        this.cauC = cauC;
-        this.cauD = cauD;
-        this.idLoaiCH = idLoaiCH;
-        this.idUser = idUser;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-    }
-
-    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH, int idUser, String createTime, String updateTime, String dapAnDung) {
+    public CauHoi(int idCauHoi, String noiDung, String cauA, String cauB, String cauC, String cauD, int idLoaiCH, int idUser, String createTime, String updateTime, String dapAnDung, boolean deleted) {
         this.idCauHoi = idCauHoi;
         this.noiDung = noiDung;
         this.cauA = cauA;
@@ -53,6 +31,7 @@ public class CauHoi implements Serializable {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.dapAnDung = dapAnDung;
+        this.deleted = deleted;
     }
 
     public int getIdCauHoi() {
@@ -141,5 +120,13 @@ public class CauHoi implements Serializable {
 
     public void setDapAnDung(String dapAnDung) {
         this.dapAnDung = dapAnDung;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

@@ -91,7 +91,7 @@ public class ViewCauHoiFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ProgressDialogF.showLoading(getContext());
-                apiService.deleteUser(idCauHoi).enqueue(new Callback<String>() {
+                apiService.deleteCauHoi(idCauHoi).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         ProgressDialogF.hideLoading();
