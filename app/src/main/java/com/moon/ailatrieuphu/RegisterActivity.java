@@ -182,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish() {
-                        diaTxtSendCode2.setText("Click here!");
+                        diaTxtSendCode2.setText("Bấm vào đây!");
                         diaTxtSendCode2.setEnabled(true);
                         diaTxtSendCode.setEnabled(true);
                     }
@@ -267,7 +267,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void run() {
                 try {
                     GMailSender sender = new GMailSender("ailatrieuphu.tt123@gmail.com",
-                            "ailatrieuphu123");
+                            "#1ailatrieuphu");
                     sender.sendMail(title, message + " " + code,
                             "ailatrieuphu.tt123@gmail.com", email);
 
