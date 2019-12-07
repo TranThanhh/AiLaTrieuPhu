@@ -38,7 +38,7 @@ public interface APIService {
     //----------------------------------CAU HOI----------------------------------------------
     //GET List cau hoi theo idLoaiCH
     @GET("/cauhois/loai")
-    Call<List<CauHoi>> getCauHoiByIdLoaiCH(@Query("idLoaiCH") int idLoaiCH);
+    Call<List<CauHoi>> getByIdLoaiCH(@Query("idLoaiCH") int idLoaiCH);
 
     //-----------------------------------ADMIN----------------------------------------------
     //Get list all cauhoi.

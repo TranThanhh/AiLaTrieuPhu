@@ -72,7 +72,7 @@ public class PlayActivity extends AppCompatActivity {
 
         apiService= APIConnect.getServer();
         ProgressDialogF.showLoading(PlayActivity.this);
-        apiService.getCauHoiByIdLoaiCH(idEasy).enqueue(new Callback<List<CauHoi>>() {
+        apiService.getByIdLoaiCH(idEasy).enqueue(new Callback<List<CauHoi>>() {
             @Override
             public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
                 ProgressDialogF.hideLoading();
@@ -92,7 +92,7 @@ public class PlayActivity extends AppCompatActivity {
 
             }
         });
-        apiService.getCauHoiByIdLoaiCH(idMedium).enqueue(new Callback<List<CauHoi>>() {
+        apiService.getByIdLoaiCH(idMedium).enqueue(new Callback<List<CauHoi>>() {
             @Override
             public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
                 listRandomMedium =getRandomNonRepeatingIntegers(5, 0,response.body().size()-1);
@@ -106,7 +106,7 @@ public class PlayActivity extends AppCompatActivity {
 
             }
         });
-        apiService.getCauHoiByIdLoaiCH(idHard).enqueue(new Callback<List<CauHoi>>() {
+        apiService.getByIdLoaiCH(idHard).enqueue(new Callback<List<CauHoi>>() {
             @Override
             public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
                 listRandomeHard =getRandomNonRepeatingIntegers(5, 0,response.body().size()-1);
