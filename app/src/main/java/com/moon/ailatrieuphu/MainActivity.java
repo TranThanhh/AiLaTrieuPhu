@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         btnExitApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //openDialogExit();
                 openAlertExit();
             }
         });

@@ -29,11 +29,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
-    private TextView txtHello, txtEmail, txtNickname, txtPassword, txtHighScore;
+    private TextView txtEmail, txtNickname, txtPassword, txtHighScore;
     private Button btnChangePassword, btnExit, btnSubmitChangePass, btnCancelChangPass;
     private EditText edtOldPass, edtNewPass, edtReNewPass;
-    private String errCurrentPass, errNewPass, errReNewPass, currentPass, newPass, reNewPass;
-    public static int diemCao;
+    private String errNewPass, currentPass, newPass, reNewPass;
     APIService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
