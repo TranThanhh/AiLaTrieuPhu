@@ -18,7 +18,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
+import com.moon.ailatrieuphu.adminpage.moderator.ModeratorFragment;
+import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.UserAdapter;
@@ -38,6 +41,7 @@ public class PlayerFragment extends Fragment {
 
     private RecyclerView rvPlayer;
     private TextView tvEmpty;
+    private FloatingActionButton fabtnOnTop;
 
     private String keyWord = "";
     private List<User> playerList;
@@ -60,6 +64,7 @@ public class PlayerFragment extends Fragment {
     private void setControl(View view) {
         rvPlayer = view.findViewById(R.id.recyclerviewPlayer);
         tvEmpty = view.findViewById(R.id.textviewEmpty);
+        fabtnOnTop = view.findViewById(R.id.floatingactionbutton);
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
@@ -122,6 +127,12 @@ public class PlayerFragment extends Fragment {
                 registerForContextMenu(v);
             }
         });
+        fabtnOnTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvPlayer.smoothScrollToPosition(1);
+            }
+        });
     }
 
     @Override
@@ -145,7 +156,7 @@ public class PlayerFragment extends Fragment {
                 break;
 
             case "Khôi phục mật khẩu":
-                Toast.makeText(getContext(), "Khôi phục mật khẩu", Toast.LENGTH_SHORT).show();
+                showRestorePasswordAlertDialog(playerList.get(Program.positionPlayer));
                 break;
 
             case "Xóa":
@@ -155,13 +166,65 @@ public class PlayerFragment extends Fragment {
         return super.onContextItemSelected(item);
     }
 
+    private void showRestorePasswordAlertDialog(User userRestorePassword) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setCancelable(false);
+        dialog.setTitle("Thay đổi mật khẩu!");
+        dialog.setIcon(R.mipmap.ic_launcher);
+        dialog.setMessage("Một mật khẩu mới cho tài khoản này sẽ được gửi tới email của họ: " + userRestorePassword.getEmail() +
+                "\nBạn có chắc chắn không?");
+        dialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                resetUserPassword(userRestorePassword);
+            }
+        });
+        dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void resetUserPassword(User userRestorePassword) {
+        String newPass = Program.getRandom8NumberString();
+        String messageMail = "Mật khẩu của bạn đã được thay đổi." + "" +
+                "\nMật khẩu mới của bạn là: " + newPass +
+                "\nHãy đăng nhập và thay đổi mật khẩu của bạn!";
+        String titleMail = "[Thay đổi mật khẩu] Game Ai Là Triệu Phú";
+
+        userRestorePassword.setPassword(EncryptPass.md5(newPass));
+        userRestorePassword.setUpdateTime(Program.getDateTimeNow());
+        ProgressDialogF.showLoading(getContext());
+        apiService.updatePassword(userRestorePassword).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                ProgressDialogF.hideLoading();
+                if(response.body().equals("success")){
+                    Program.sendMail(titleMail,messageMail,"",userRestorePassword.getEmail());
+                    Toast.makeText(getContext(), "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ProgressDialogF.hideLoading();
+                Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void deleteUser(int idUser) {
         ProgressDialogF.showLoading(getContext());
         apiService.countCauHoiOfUser(idUser).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 ProgressDialogF.hideLoading();
-                if(response.body()==0){
+                if (response.body() == 0) {
                     showDeleteAlertDialog(idUser);
                 } else {
                     showDialogAlert(response.body());
@@ -181,7 +244,7 @@ public class PlayerFragment extends Fragment {
         dialog.setCancelable(false);
         dialog.setTitle("Không thể xóa!");
         dialog.setIcon(R.mipmap.ic_launcher);
-        dialog.setMessage("Người dùng có Nickname: "+playerList.get(Program.positionPlayer).getNickname()+"\nlà tác giả của "+count+" câu hỏi.\n" +
+        dialog.setMessage("Người dùng có Nickname: " + playerList.get(Program.positionPlayer).getNickname() + "\nlà tác giả của " + count + " câu hỏi.\n" +
                 "Bạn không thể xóa người này!");
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -195,7 +258,7 @@ public class PlayerFragment extends Fragment {
     private void showDeleteAlertDialog(int idUser) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setCancelable(false);
-        alertDialog.setTitle("Xóa "+playerList.get(Program.positionPlayer).getEmail());
+        alertDialog.setTitle("Xóa " + playerList.get(Program.positionPlayer).getEmail());
         alertDialog.setIcon(R.mipmap.ic_launcher);
         alertDialog.setMessage("Người dùng có Nickname: " + playerList.get(Program.positionPlayer).getNickname()
                 + " sẽ bị xóa. \nTất cả thông tin và điểm số sẽ bị mất."

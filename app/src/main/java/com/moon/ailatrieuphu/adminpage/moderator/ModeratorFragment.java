@@ -2,6 +2,7 @@ package com.moon.ailatrieuphu.adminpage.moderator;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -18,7 +19,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
+import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.UserAdapter;
@@ -41,6 +44,7 @@ public class ModeratorFragment extends Fragment {
     private String keyWord = "";
     private List<User> modList;
     private boolean isLoaded = false;
+    private FloatingActionButton fabtnOnTop;
 
     private APIService apiService;
     private UserAdapter userAdapter;
@@ -59,6 +63,7 @@ public class ModeratorFragment extends Fragment {
     private void setControl(View view) {
         rvMod = view.findViewById(R.id.recyclerviewModerator);
         tvEmpty = view.findViewById(R.id.textviewEmpty);
+        fabtnOnTop = view.findViewById(R.id.floatingactionbutton);
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
@@ -121,6 +126,12 @@ public class ModeratorFragment extends Fragment {
                 registerForContextMenu(v);
             }
         });
+        fabtnOnTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvMod.smoothScrollToPosition(1);
+            }
+        });
     }
 
     @Override
@@ -141,7 +152,7 @@ public class ModeratorFragment extends Fragment {
                 break;
 
             case "Khôi phục mật khẩu":
-                Toast.makeText(getContext(), "Khôi phục mật khẩu", Toast.LENGTH_SHORT).show();
+                showRestorePasswordAlertDialog(modList.get(Program.positionModerator));
                 break;
 
             case "Xóa":
@@ -149,6 +160,58 @@ public class ModeratorFragment extends Fragment {
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void showRestorePasswordAlertDialog(User userRestorePassword) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setCancelable(false);
+        dialog.setTitle("Thay đổi mật khẩu!");
+        dialog.setIcon(R.mipmap.ic_launcher);
+        dialog.setMessage("Một mật khẩu mới cho tài khoản này sẽ được gửi tới email của họ: " + userRestorePassword.getEmail() +
+                "\nBạn có chắc chắn không?");
+        dialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                resetUserPassword(userRestorePassword);
+            }
+        });
+        dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void resetUserPassword(User userRestorePassword) {
+        String newPass = Program.getRandom8NumberString();
+        String messageMail = "Mật khẩu của bạn đã được thay đổi." + "" +
+                "\nMật khẩu mới của bạn là: " + newPass +
+                "\nHãy đăng nhập và thay đổi mật khẩu của bạn!";
+        String titleMail = "[Thay đổi mật khẩu] Game Ai Là Triệu Phú";
+
+        userRestorePassword.setPassword(EncryptPass.md5(newPass));
+        userRestorePassword.setUpdateTime(Program.getDateTimeNow());
+        ProgressDialogF.showLoading(getContext());
+        apiService.updatePassword(userRestorePassword).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                ProgressDialogF.hideLoading();
+                if(response.body().equals("success")){
+                    Program.sendMail(titleMail,messageMail,"",userRestorePassword.getEmail());
+                    Toast.makeText(getContext(), "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ProgressDialogF.hideLoading();
+                Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void deleteUser(int idUser) {

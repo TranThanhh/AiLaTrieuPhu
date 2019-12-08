@@ -61,7 +61,7 @@ public class PlayActivity extends AppCompatActivity {
         btnB=findViewById(R.id.buttonB);
         btnC=findViewById(R.id.buttonC);
         btnD=findViewById(R.id.buttonD);
-        btnStopPlay=findViewById(R.id.buttonExit);
+        btnStopPlay=findViewById(R.id.buttonLogout);
         img5050=findViewById(R.id.img5050);
         imgCall=findViewById(R.id.imgCall);
         imgHelp=findViewById(R.id.imgHelp);

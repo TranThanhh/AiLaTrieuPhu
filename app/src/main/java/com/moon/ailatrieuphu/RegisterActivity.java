@@ -146,9 +146,9 @@ public class RegisterActivity extends AppCompatActivity {
     private void showDialogCode(User user) {
         final String titleMail = "Ai là triệu phú: Mã code xác thực";
         final String messageMail = "Xin chào! Đây là mã code bạn yêu cầu từ admin game Ai là triệu phú\n";
-        code = getRandomNumberString();
+        code = Program.getRandom8NumberString();
         Log.d("code", code);
-        sendMail(titleMail, messageMail, code, user.getEmail());
+        Program.sendMail(titleMail, messageMail, code, user.getEmail());
 
         TimerSingleton.timer.start();
         final Dialog dialogSendCode = new Dialog(RegisterActivity.this);
@@ -192,19 +192,19 @@ public class RegisterActivity extends AppCompatActivity {
         diaTxtSendCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                code = getRandomNumberString();
+                code = Program.getRandom8NumberString();
                 Log.d("code", code);
                 TimerSingleton.timer.start();
-                sendMail(titleMail, messageMail, code, user.getEmail());
+                Program.sendMail(titleMail, messageMail, code, user.getEmail());
                 timer.start();
             }
         });
         diaTxtSendCode2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                code = getRandomNumberString();
+                code = Program.getRandom8NumberString();
                 TimerSingleton.timer.start();
-                sendMail(titleMail, messageMail, code, user.getEmail());
+                Program.sendMail(titleMail, messageMail, code, user.getEmail());
                 timer.start();
             }
         });
@@ -251,33 +251,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public static String getRandomNumberString() {
-        Random rnd = new Random();
-        int number = rnd.nextInt(999999);
-
-        // this will convert any number sequence into 6 character.
-        return String.format("%06d", number);
-    }
-    public static void sendMail(final String title, final String message, final String code, final String email){
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    GMailSender sender = new GMailSender("ailatrieuphu.tt123@gmail.com",
-                            "#1ailatrieuphu");
-                    sender.sendMail(title, message + " " + code,
-                            "ailatrieuphu.tt123@gmail.com", email);
-
-                } catch (Exception e) {
-                    Log.e("SendMail", e.getMessage(), e);
-
-                }
-            }
-
-        }).start();
     }
 
     public static String checkEmail(String s) {

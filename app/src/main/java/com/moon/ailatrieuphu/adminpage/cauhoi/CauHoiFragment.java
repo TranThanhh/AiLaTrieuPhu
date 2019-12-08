@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
@@ -33,9 +34,10 @@ public class CauHoiFragment extends Fragment {
     private RecyclerView rvCauHoi;
     private TextView tvEmpty;
 
-    private String keyWord="";
+    private String keyWord = "";
     private List<CauHoi> cauHoiList;
-    private boolean isLoaded=true;
+    private boolean isLoaded = true;
+    private FloatingActionButton fabtnOnTop;
 
     private APIService apiService;
     private CauHoiAdapter cauHoiAdapter;
@@ -44,7 +46,7 @@ public class CauHoiFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_cau_hoi, container, false);
+        View view = inflater.inflate(R.layout.fragment_cau_hoi, container, false);
 
         setControl(view);
 
@@ -52,12 +54,13 @@ public class CauHoiFragment extends Fragment {
     }
 
     private void setControl(View view) {
-        rvCauHoi=view.findViewById(R.id.recyclerviewCauHoi);
-        tvEmpty=view.findViewById(R.id.textviewEmpty);
+        rvCauHoi = view.findViewById(R.id.recyclerviewCauHoi);
+        tvEmpty = view.findViewById(R.id.textviewEmpty);
+        fabtnOnTop = view.findViewById(R.id.floatingactionbutton);
 
-        fragmentManager=getFragmentManager();
-        apiService= APIConnect.getServer();
-        cauHoiList=new ArrayList<>();
+        fragmentManager = getFragmentManager();
+        apiService = APIConnect.getServer();
+        cauHoiList = new ArrayList<>();
 
         reloadData();
     }
@@ -114,12 +117,18 @@ public class CauHoiFragment extends Fragment {
             @Override
             public void onItemCLick(int position, View v) {
                 //Toast.makeText(getContext(), cauHoiList.get(position).getIdCauHoi()+"", Toast.LENGTH_SHORT).show();
-                Program.positionCauHoi=position;
+                Program.positionCauHoi = position;
                 ViewCauHoiFragment viewCauHoiFragment = new ViewCauHoiFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("#cauhoi", cauHoiList.get(position));
                 viewCauHoiFragment.setArguments(bundle);
                 fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, viewCauHoiFragment).addToBackStack(null).commit();
+            }
+        });
+        fabtnOnTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvCauHoi.smoothScrollToPosition(1);
             }
         });
     }

@@ -1,7 +1,5 @@
 package com.moon.ailatrieuphu.player;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.moon.ailatrieuphu.MainActivity;
 import com.moon.ailatrieuphu.Program;

@@ -36,7 +36,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private EditText edtEmailLogin, edtPassdLogin, diaEdtEmailForgotPass, diaEdtCodeForgotPass;
-    private Button btnLogin, btnRegis_Login, btnExitApp, btnStartGame, btnCheckInfo, btnExit2, btnViewHighScore, btnSubmitExit,
+    private Button btnLogin, btnRegis_Login, btnExitApp, btnStartGame, btnCheckInfo, btnLogout, btnViewHighScore, btnSubmitExit,
             btnCancelExit, diaBtnConfirmForgotPass, diaBtnCancelForgotPass;
     private String email, password, errEmail, errPassword;
     private TextView txtHello, txtForgotPass;
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
     private void openDialogForgotPass() {
         final String titleMail = "Ai là triệu phú: Mã code xác thực";
         final String messageMail = "Xin chào! Đây là mã code bạn yêu cầu từ admin game Ai là triệu phú\n";
-        final Dialog dialogSendCode= new Dialog(MainActivity.this);
+        final Dialog dialogSendCode = new Dialog(MainActivity.this);
         dialogSendCode.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogSendCode.setContentView(R.layout.dialog_sendcode);
         dialogSendCode.setCanceledOnTouchOutside(false);
@@ -185,20 +185,20 @@ public class MainActivity extends AppCompatActivity {
                 final String sEmail = diaEdtEmailForgotPass.getText().toString();
                 String errorEmail = "";
                 errorEmail = RegisterActivity.checkEmail(sEmail);
-                if(!errorEmail.equals("")){
-                    Toast.makeText(MainActivity.this,errorEmail,Toast.LENGTH_SHORT).show();
+                if (!errorEmail.equals("")) {
+                    Toast.makeText(MainActivity.this, errorEmail, Toast.LENGTH_SHORT).show();
                     diaEdtEmailForgotPass.requestFocus();
                     diaEdtEmailForgotPass.setSelection(sEmail.length());
                     return;
                 }
 
-                code = RegisterActivity.getRandomNumberString();
+                code = Program.getRandom8NumberString();
                 userForgot.setEmail(sEmail.trim());
                 apiService.checkUserExists(userForgot).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.body().equals("email")){
-                            RegisterActivity.sendMail(titleMail,messageMail,code,userForgot.getEmail());
+                        if (response.body().equals("email")) {
+                            Program.sendMail(titleMail, messageMail, code, userForgot.getEmail());
                             TimerSingleton.timer.start();
                             diaEdtCodeForgotPass.setEnabled(true);
                             diaEdtCodeForgotPass.requestFocus();
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                             timer = new CountDownTimer(Program.timeFuture, Program.timeInterval) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
-                                    diaTxtSendCode.setText("   " + millisUntilFinished/1000 + "");
+                                    diaTxtSendCode.setText("   " + millisUntilFinished / 1000 + "");
                                     diaTxtSendCode.setEnabled(false);
                                 }
 
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                                     diaTxtSendCode.setEnabled(true);
                                 }
                             }.start();
-                        }else{
+                        } else {
                             Toast.makeText(MainActivity.this, "Email chưa đăng ký!", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -242,11 +242,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String inputCode = diaEdtCodeForgotPass.getText().toString().trim();
-                if(inputCode.equals("")){
+                if (inputCode.equals("")) {
                     Toast.makeText(MainActivity.this, "Bạn chưa nhập vào mã code!", Toast.LENGTH_SHORT).show();
-                }else if(!inputCode.equals(code)){
+                } else if (!inputCode.equals(code)) {
                     Toast.makeText(MainActivity.this, "Mã code không đúng! Nhập lại!", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     dialogSendCode.cancel();
                     dialogChangePass(userForgot.getEmail());
                 }
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void dialogChangePass(String email) {
-        final Dialog dialogChangePass= new Dialog(MainActivity.this);
+        final Dialog dialogChangePass = new Dialog(MainActivity.this);
         dialogChangePass.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogChangePass.setContentView(R.layout.dialog_forgot_password);
         dialogChangePass.setCanceledOnTouchOutside(false);
@@ -274,22 +274,22 @@ public class MainActivity extends AppCompatActivity {
                 String reNewPassword = diaEdtRePass.getText().toString().trim();
                 String errPass = "";
                 errPass = RegisterActivity.checkPassword(newPassword);
-                if(!errPass.equals("")){
+                if (!errPass.equals("")) {
                     Toast.makeText(MainActivity.this, errPass, Toast.LENGTH_SHORT).show();
                     diaEdtNewPass.requestFocus();
                     diaEdtNewPass.setSelection(newPassword.length());
                     return;
-                }else if(reNewPassword.equals("")){
+                } else if (reNewPassword.equals("")) {
                     Toast.makeText(MainActivity.this, "Nhập lại mật khẩu", Toast.LENGTH_SHORT).show();
                     diaEdtRePass.requestFocus();
                     diaEdtRePass.setSelection(reNewPassword.length());
                     return;
-                } else if(!reNewPassword.equals(newPassword.trim())){
+                } else if (!reNewPassword.equals(newPassword.trim())) {
                     Toast.makeText(MainActivity.this, "Mật khẩu nhập lại không chính xác!", Toast.LENGTH_SHORT).show();
                     diaEdtRePass.requestFocus();
                     diaEdtRePass.setSelection(reNewPassword.length());
                     return;
-                }else{
+                } else {
                     final User userChangePass = new User();
                     userChangePass.setEmail(email);
                     userChangePass.setPassword(EncryptPass.md5(newPassword.trim()));
@@ -299,19 +299,19 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
                             ProgressDialogF.hideLoading();
-                            if(response.body().equals("success")){
-                                Toast.makeText(MainActivity.this,"Thay đổi mật khẩu thành công!",Toast.LENGTH_SHORT).show();
+                            if (response.body().equals("success")) {
+                                Toast.makeText(MainActivity.this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
                                 Program.user.setPassword(userChangePass.getPassword());
-                                Intent intent=new Intent(MainActivity.this, MainActivity.class);
+                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
                                 startActivity(intent);
-                            }else{
-                                Toast.makeText(MainActivity.this,R.string.err_internal_server,Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, R.string.err_internal_server, Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-                            Toast.makeText(MainActivity.this,R.string.err_connect,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
         btnStartGame = dialog.findViewById(R.id.buttonStartGame);
         btnCheckInfo = dialog.findViewById(R.id.buttonCheckInfo);
         btnViewHighScore = dialog.findViewById(R.id.buttonViewHighScore);
-        btnExit2 = dialog.findViewById(R.id.buttonExit);
+        btnLogout = dialog.findViewById(R.id.buttonLogout);
         txtHello = dialog.findViewById(R.id.textViewHello);
         txtHello.setText("Xin chào " + Program.user.getNickname() + " !");
         btnStartGame.setOnClickListener(new View.OnClickListener() {
@@ -391,9 +391,10 @@ public class MainActivity extends AppCompatActivity {
                 new PlayerHighScoreDialogFragment().show(getSupportFragmentManager(), null);
             }
         });
-        btnExit2.setOnClickListener(new View.OnClickListener() {
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Program.user = null;
                 dialog.cancel();
             }
         });
