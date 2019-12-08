@@ -35,6 +35,10 @@ public interface APIService {
     @PUT("/users/score")
     Call<String> modifyScore(@Body User user);
 
+    //get list highscore
+    @GET("/users/highscore")
+    Call<List<User>> getAllPlayerHighScore();
+
     //----------------------------------CAU HOI----------------------------------------------
     //GET List cau hoi theo idLoaiCH
     @GET("/cauhois/loai")

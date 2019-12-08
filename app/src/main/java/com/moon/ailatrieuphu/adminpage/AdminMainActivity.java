@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -53,18 +54,21 @@ public class AdminMainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new CauHoiFragment(), "CauHoiFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(true);
+                        Log.d("TestPosition","CauHoi: "+Program.positionCauHoi);
                         break;
                     case R.id.navigationPlayer:
-                        if (fragmentManager.findFragmentByTag("MemberFrag") == null) {
-                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new PlayerFragment(), "MemberFrag").commit();
+                        if (fragmentManager.findFragmentByTag("PlayerFrag") == null) {
+                            fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new PlayerFragment(), "PlayerFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(false);
+                        Log.d("TestPosition","Player: "+Program.positionPlayer);
                         break;
                     case R.id.navigationModerator:
                         if (fragmentManager.findFragmentByTag("ModeratorFrag") == null) {
                             fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new ModeratorFragment(), "ModeratorFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(false);
+                        Log.d("TestPosition","Moderator: "+Program.positionModerator);
                         break;
 
                 }

@@ -14,15 +14,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
-import com.moon.ailatrieuphu.api.APIClient;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;

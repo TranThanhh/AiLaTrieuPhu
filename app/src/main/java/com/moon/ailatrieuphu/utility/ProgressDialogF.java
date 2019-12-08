@@ -1,10 +1,12 @@
-package com.moon.ailatrieuphu;
+package com.moon.ailatrieuphu.utility;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.moon.ailatrieuphu.R;
 
 public class ProgressDialogF extends AppCompatActivity {
     private static AlertDialog mAlertDialog;
