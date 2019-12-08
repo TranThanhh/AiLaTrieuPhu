@@ -27,6 +27,7 @@ import com.moon.ailatrieuphu.email.TimerSingleton;
 import com.moon.ailatrieuphu.model.User;
 import com.moon.ailatrieuphu.player.ProfileActivity;
 import com.moon.ailatrieuphu.player.PlayerHighScoreDialogFragment;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -304,13 +305,13 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent=new Intent(MainActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }else{
-                                Toast.makeText(MainActivity.this,"Thay đổi mật khẩu thất bại!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this,R.string.err_internal_server,Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-                            Toast.makeText(MainActivity.this,"Thay đổi mật khẩu thất bại. Có lỗi xảy ra!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,R.string.err_connect,Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

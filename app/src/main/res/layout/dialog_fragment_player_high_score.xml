@@ -8,6 +8,7 @@
     android:minWidth="400dp"
     android:clickable="true"
     android:orientation="vertical"
+    android:background="#9E7ED6"
     android:padding="5dp"
     tools:context=".player.PlayerHighScoreDialogFragment">
 
