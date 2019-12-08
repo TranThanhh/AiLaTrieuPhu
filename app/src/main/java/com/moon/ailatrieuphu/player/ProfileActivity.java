@@ -1,4 +1,4 @@
-package com.moon.ailatrieuphu;
+package com.moon.ailatrieuphu.player;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,10 +14,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.moon.ailatrieuphu.MainActivity;
+import com.moon.ailatrieuphu.Program;
+import com.moon.ailatrieuphu.R;
+import com.moon.ailatrieuphu.RegisterActivity;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.model.User;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnChangePassword=findViewById(R.id.buttonChangePass);
         btnExit =findViewById(R.id.buttonExit);
 
-        Log.d("test1",Program.user.getNickname());
+        Log.d("test1", Program.user.getNickname());
 
         txtEmail.setText(Program.user.getEmail());
         txtNickname.setText(Program.user.getNickname());
@@ -78,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
                         currentPass=edtOldPass.getText().toString();
                         newPass=edtNewPass.getText().toString();
                         reNewPass=edtReNewPass.getText().toString();
-                        errNewPass=RegisterActivity.checkPassword(newPass);
+                        errNewPass= RegisterActivity.checkPassword(newPass);
                         if(currentPass.equals("")&&newPass.equals("")&&reNewPass.equals("")){
                             Toast.makeText(ProfileActivity.this,"Bạn cần nhập tất cả các trường!",Toast.LENGTH_SHORT).show();
                             edtOldPass.requestFocus();

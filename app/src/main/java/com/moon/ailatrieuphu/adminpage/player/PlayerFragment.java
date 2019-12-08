@@ -2,8 +2,6 @@ package com.moon.ailatrieuphu.adminpage.player;
 
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -16,13 +14,12 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.UserAdapter;
 import com.moon.ailatrieuphu.api.APIConnect;
@@ -77,7 +74,6 @@ public class PlayerFragment extends Fragment {
         } else {
             processSearch(keyWord);
         }
-        rvPlayer.scrollToPosition(Program.positionPlayer);
     }
 
     private void processSearch(String keyWord) {
@@ -107,6 +103,7 @@ public class PlayerFragment extends Fragment {
                 } else {
                     userAdapter.refresh(playerList);
                 }
+                rvPlayer.scrollToPosition(Program.positionPlayer);
             }
 
             @Override

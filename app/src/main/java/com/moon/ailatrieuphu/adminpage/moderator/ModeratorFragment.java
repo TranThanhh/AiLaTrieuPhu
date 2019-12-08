@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.UserAdapter;
 import com.moon.ailatrieuphu.api.APIConnect;
@@ -73,7 +73,6 @@ public class ModeratorFragment extends Fragment {
         } else {
             processSearch(keyWord);
         }
-        rvMod.scrollToPosition(Program.positionModerator);
     }
 
     private void processSearch(String keyWord) {
@@ -103,6 +102,7 @@ public class ModeratorFragment extends Fragment {
                 } else {
                     userAdapter.refresh(modList);
                 }
+                rvMod.scrollToPosition(Program.positionModerator);
             }
 
             @Override

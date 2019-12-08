@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
@@ -68,7 +68,6 @@ public class CauHoiFragment extends Fragment {
         } else {
             processSearch(keyWord);
         }
-        rvCauHoi.scrollToPosition(Program.positionCauHoi);
     }
 
     private void processSearch(String keyWord) {
@@ -99,6 +98,7 @@ public class CauHoiFragment extends Fragment {
                 } else {
                     cauHoiAdapter.refresh(cauHoiList);
                 }
+                rvCauHoi.scrollToPosition(Program.positionCauHoi);
             }
 
             @Override

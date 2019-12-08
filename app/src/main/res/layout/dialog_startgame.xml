@@ -58,6 +58,20 @@
             android:textColor="#fff"
             android:textSize="14sp"
             android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/buttonViewHighScore"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_select"
+            android:text="Xem điểm cao"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:layout_marginBottom="20dp"/>
+
+
         <Button
             android:id="@+id/buttonExit"
             android:layout_width="match_parent"

@@ -22,6 +22,7 @@ import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.email.GMailSender;
 import com.moon.ailatrieuphu.email.TimerSingleton;
 import com.moon.ailatrieuphu.model.User;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 
 import java.util.Random;
 import java.util.regex.Pattern;

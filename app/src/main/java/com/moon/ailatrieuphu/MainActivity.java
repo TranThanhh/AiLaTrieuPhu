@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
@@ -24,6 +25,8 @@ import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.email.TimerSingleton;
 import com.moon.ailatrieuphu.model.User;
+import com.moon.ailatrieuphu.player.ProfileActivity;
+import com.moon.ailatrieuphu.player.PlayerHighScoreDialogFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,9 +34,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText edtEmailLogin, edtPassdLogin;
-    private Button btnLogin, btnRegis_Login, btnExitApp, btnStartGame, btnCheckInfo, btnExit2, btnSubmitExit,
-            btnCancelExit;
+    private EditText edtEmailLogin, edtPassdLogin, diaEdtEmailForgotPass, diaEdtCodeForgotPass;
+    private Button btnLogin, btnRegis_Login, btnExitApp, btnStartGame, btnCheckInfo, btnExit2, btnViewHighScore, btnSubmitExit,
+            btnCancelExit, diaBtnConfirmForgotPass, diaBtnCancelForgotPass;
     private String email, password, errEmail, errPassword;
     private TextView txtHello, txtForgotPass;
     private static final int SIGNUP_REQUEST_CODE = 1;
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                                 editor.remove("remember");
                                 editor.commit();
                             }
-                            if (Program.user.getRoleLevel()==0) {
+                            if (Program.user.getRoleLevel() == 0) {
                                 openDialogStart();
                             } else {
                                 startActivity(new Intent(MainActivity.this, AdminMainActivity.class));
@@ -363,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         btnStartGame = dialog.findViewById(R.id.buttonStartGame);
         btnCheckInfo = dialog.findViewById(R.id.buttonCheckInfo);
+        btnViewHighScore = dialog.findViewById(R.id.buttonViewHighScore);
         btnExit2 = dialog.findViewById(R.id.buttonExit);
         txtHello = dialog.findViewById(R.id.textViewHello);
         txtHello.setText("Xin chào " + Program.user.getNickname() + " !");
@@ -378,6 +382,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
+            }
+        });
+        btnViewHighScore.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new PlayerHighScoreDialogFragment().show(getSupportFragmentManager(), null);
             }
         });
         btnExit2.setOnClickListener(new View.OnClickListener() {
