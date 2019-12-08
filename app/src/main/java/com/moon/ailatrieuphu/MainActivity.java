@@ -35,9 +35,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText edtEmailLogin, edtPassdLogin, diaEdtEmailForgotPass, diaEdtCodeForgotPass;
-    private Button btnLogin, btnRegis_Login, btnExitApp, btnStartGame, btnCheckInfo, btnExit2, btnViewHighScore, btnSubmitExit,
-            btnCancelExit, diaBtnConfirmForgotPass, diaBtnCancelForgotPass;
+    private EditText edtEmailLogin, edtPassdLogin;
+    private Button btnLogin, btnRegis_Login, btnExitApp, btnStartGame, btnCheckInfo, btnExit2, btnViewHighScore;
     private String email, password, errEmail, errPassword;
     private TextView txtHello, txtForgotPass;
     private static final int SIGNUP_REQUEST_CODE = 1;
