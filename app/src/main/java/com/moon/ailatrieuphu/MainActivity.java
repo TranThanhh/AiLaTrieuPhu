@@ -293,23 +293,19 @@ public class MainActivity extends AppCompatActivity {
                     userChangePass.setPassword(EncryptPass.md5(newPassword.trim()));
                     userChangePass.setUpdateTime(Program.getDateTimeNow());
                     ProgressDialogF.showLoading(MainActivity.this);
-                    apiService.updatePassword(userChangePass).enqueue(new Callback<String>() {
+                    apiService.forgotPassword(userChangePass).enqueue(new Callback<Void>() {
                         @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
+                        public void onResponse(Call<Void> call, Response<Void> response) {
                             ProgressDialogF.hideLoading();
-                            if(response.body().equals("success")){
-                                Toast.makeText(MainActivity.this,"Thay đổi mật khẩu thành công!",Toast.LENGTH_SHORT).show();
-                                Program.user.setPassword(userChangePass.getPassword());
-                                Intent intent=new Intent(MainActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }else{
-                                Toast.makeText(MainActivity.this,R.string.err_internal_server,Toast.LENGTH_SHORT).show();
+                            if(response.code() == 200){
+                                Toast.makeText(MainActivity.this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                                dialogChangePass.cancel();
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Toast.makeText(MainActivity.this,R.string.err_connect,Toast.LENGTH_SHORT).show();
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
