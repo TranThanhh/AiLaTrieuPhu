@@ -32,14 +32,11 @@ import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText edtEmail, edtNickname, edtPassword, edtRePassword, diaEdtCode;
-    private Button btnRegister, btnCancelRegis,  diaBtnConfirmCode,  diaBtnCancelCode;
+    private EditText edtEmail, edtNickname, edtPassword, edtRePassword;
+    private Button btnRegister, btnCancelRegis;
     private String email, nickname, password, passwordEncrypt, rePassword, errEmail, errNickname, errPassword;
-    private TextView diaTxtSendCode, diaTxtSendCode2;
     private String code = "";
     private CountDownTimer timer;
-    public static int timeFuture = 60000;
-    public static int timeInterval = 1000;
     public static String countTestTime = "0";
 
     APIService apiService;
@@ -158,37 +155,39 @@ public class RegisterActivity extends AppCompatActivity {
         dialogSendCode.setContentView(R.layout.dialog_register_enter_code);
         dialogSendCode.setCanceledOnTouchOutside(false);
         dialogSendCode.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialogSendCode.show();
-        diaEdtCode = dialogSendCode.findViewById(R.id.editText_Code);
-        diaTxtSendCode = dialogSendCode.findViewById(R.id.textViewSendCode1);
-        diaTxtSendCode2 = dialogSendCode.findViewById(R.id.textViewSendCode2);
-        diaBtnConfirmCode = dialogSendCode.findViewById(R.id.buttonSubmitCode);
-        diaBtnCancelCode = dialogSendCode.findViewById(R.id.buttonCancelCode);
+
+        final EditText diaEdtCode = dialogSendCode.findViewById(R.id.editText_Code);
+        final TextView diaTxtSendCode = dialogSendCode.findViewById(R.id.textViewSendCode1);
+        final TextView diaTxtSendCode2 = dialogSendCode.findViewById(R.id.textViewSendCode2);
+        Button diaBtnConfirmCode = dialogSendCode.findViewById(R.id.buttonSubmitCode);
+        Button diaBtnCancelCode = dialogSendCode.findViewById(R.id.buttonCancelCode);
 
         diaEdtCode.requestFocus();
+
         dialogSendCode.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                timer = new CountDownTimer(timeFuture, timeInterval) {
+                timer =new CountDownTimer(Program.timeFuture, Program.timeInterval) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        diaTxtSendCode2.setText("  " + millisUntilFinished/1000 + "");
-                        diaTxtSendCode2.setEnabled(false);
+                        diaTxtSendCode2.setText("   " + millisUntilFinished/1000 + "");
                         diaTxtSendCode.setEnabled(false);
-                        if (millisUntilFinished/1000 == 0){
-                            timer.onFinish();
-                        }
+                        diaTxtSendCode2.setEnabled(false);
                     }
 
                     @Override
                     public void onFinish() {
                         diaTxtSendCode2.setText("Bấm vào đây!");
-                        diaTxtSendCode2.setEnabled(true);
                         diaTxtSendCode.setEnabled(true);
+                        diaTxtSendCode2.setEnabled(true);
                     }
                 }.start();
             }
         });
+
+        dialogSendCode.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogSendCode.show();
+
         diaTxtSendCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,7 +279,7 @@ public class RegisterActivity extends AppCompatActivity {
         }).start();
     }
 
-    public String checkEmail(String s) {
+    public static String checkEmail(String s) {
         String result = "";
         //verify if Email has all Space
         if (checkSpace(s) && s.trim().equals("")) {
@@ -351,7 +350,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return false;
     }
-    public String emailPatern(String s){
+    public static String emailPatern(String s){
         String emailPattern="[\\w.]+@[a-z.]+\\.+[a-z]+";
         if(Pattern.matches(emailPattern,s)){
             return "true";

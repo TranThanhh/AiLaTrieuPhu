@@ -13,6 +13,8 @@ public class Program {
     public static int positionCauHoi=0;
     public static int positionPlayer=0;
     public static int positionModerator=0;
+    public static int timeFuture = 60000;
+    public static int timeInterval = 1000;
 
     public static String getDateTimeNow() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
