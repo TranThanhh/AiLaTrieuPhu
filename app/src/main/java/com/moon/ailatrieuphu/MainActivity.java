@@ -35,9 +35,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText edtEmailLogin, edtPassdLogin, diaEdtEmailForgotPass, diaEdtCodeForgotPass;
     private Button btnLogin, btnRegis_Login, btnExitApp, btnStartGame, btnCheckInfo, btnLogout, btnViewHighScore, btnSubmitExit,
             btnCancelExit, diaBtnConfirmForgotPass, diaBtnCancelForgotPass;
+    private EditText edtEmailLogin, edtPassdLogin;
     private String email, password, errEmail, errPassword;
     private TextView txtHello, txtForgotPass;
     private static final int SIGNUP_REQUEST_CODE = 1;
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
         btnExitApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //openDialogExit();
                 openAlertExit();
             }
         });
@@ -295,22 +294,18 @@ public class MainActivity extends AppCompatActivity {
                     userChangePass.setPassword(EncryptPass.md5(newPassword.trim()));
                     userChangePass.setUpdateTime(Program.getDateTimeNow());
                     ProgressDialogF.showLoading(MainActivity.this);
-                    apiService.updatePassword(userChangePass).enqueue(new Callback<String>() {
+                    apiService.forgotPassword(userChangePass).enqueue(new Callback<Void>() {
                         @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
+                        public void onResponse(Call<Void> call, Response<Void> response) {
                             ProgressDialogF.hideLoading();
-                            if (response.body().equals("success")) {
+                            if(response.code() == 200){
                                 Toast.makeText(MainActivity.this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-                                Program.user.setPassword(userChangePass.getPassword());
-                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(MainActivity.this, R.string.err_internal_server, Toast.LENGTH_SHORT).show();
+                                dialogChangePass.cancel();
                             }
                         }
-
+                        
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                        public void onFailure(Call<Void> call, Throwable t) {
                             Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
                         }
                     });

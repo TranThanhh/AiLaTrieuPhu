@@ -31,6 +31,10 @@ public interface APIService {
     @PUT("/users/password")
     Call<String> updatePassword(@Body User user);
 
+    //forgot password
+    @PUT("/users/newpassword")
+    Call<Void> forgotPassword(@Body User user);
+
     //Change Score
     @PUT("/users/score")
     Call<String> modifyScore(@Body User user);
