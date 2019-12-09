@@ -60,21 +60,21 @@ public class AdminMainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new CauHoiFragment(), "CauHoiFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(true);
-                        Log.d("TestPosition", "CauHoi: " + Program.positionCauHoi);
+                        isToasted = false;
                         break;
                     case R.id.navigationPlayer:
                         if (fragmentManager.findFragmentByTag("PlayerFrag") == null) {
                             fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new PlayerFragment(), "PlayerFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(false);
-                        Log.d("TestPosition", "Player: " + Program.positionPlayer);
+                        isToasted = false;
                         break;
                     case R.id.navigationModerator:
                         if (fragmentManager.findFragmentByTag("ModeratorFrag") == null) {
                             fragmentManager.beginTransaction().replace(R.id.mainFragmentContainerAdmin, new ModeratorFragment(), "ModeratorFrag").commit();
                         }
                         toolbar.getMenu().findItem(R.id.menuAddQuestion).setVisible(false);
-                        Log.d("TestPosition", "Moderator: " + Program.positionModerator);
+                        isToasted = false;
                         break;
 
                 }
@@ -107,10 +107,12 @@ public class AdminMainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.menuAddQuestion:
+                isToasted = false;
                 fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, new AddCauHoiFragment()).addToBackStack(null).commit();
                 break;
 
             case R.id.menuProfile:
+                isToasted = false;
                 startActivity(new Intent(AdminMainActivity.this, ProfileActivity.class));
                 break;
 
@@ -140,5 +142,11 @@ public class AdminMainActivity extends AppCompatActivity {
             super.onBackPressed();
             finishAffinity();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isToasted = false;
     }
 }

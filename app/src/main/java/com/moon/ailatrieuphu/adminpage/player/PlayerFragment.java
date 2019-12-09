@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.adminpage.moderator.ModeratorFragment;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
@@ -86,7 +85,7 @@ public class PlayerFragment extends Fragment {
 
     private void getAllPlayer() {
         ProgressDialogF.showLoading(getContext());
-        apiService.getAllPlayer().enqueue(new Callback<List<User>>() {
+        apiService.getAllPlayerActive().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 ProgressDialogF.hideLoading();
@@ -220,7 +219,7 @@ public class PlayerFragment extends Fragment {
 
     private void deleteUser(int idUser) {
         ProgressDialogF.showLoading(getContext());
-        apiService.countCauHoiOfUser(idUser).enqueue(new Callback<Integer>() {
+        apiService.countCauHoiOfUserActive(idUser).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 ProgressDialogF.hideLoading();

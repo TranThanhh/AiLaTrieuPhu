@@ -59,7 +59,7 @@ public class PlayerHighScoreDialogFragment extends DialogFragment {
 
     private void getAllPlayerHighScore() {
         ProgressDialogF.showLoading(getContext());
-        apiService.getAllPlayerHighScore().enqueue(new Callback<List<User>>() {
+        apiService.getAllPlayerHighScoreActive().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 ProgressDialogF.hideLoading();
