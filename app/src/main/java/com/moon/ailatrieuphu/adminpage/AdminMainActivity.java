@@ -108,7 +108,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
             case R.id.menuAddQuestion:
                 isToasted = false;
-                fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, new AddCauHoiFragment()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().add(R.id.fullscreenFragmentContainerAdmin, new AddCauHoiFragment(), "AddCauHoiFrag").addToBackStack(null).commit();
                 break;
 
             case R.id.menuProfile:
@@ -134,13 +134,17 @@ public class AdminMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (isToasted == false) {
-            Toast.makeText(this, "Nhấn lần nữa để thoát!", Toast.LENGTH_SHORT).show();
-            isToasted = true;
+        if (fragmentManager.findFragmentByTag("AddCauHoiFrag") == null) {
+            if (isToasted == false) {
+                Toast.makeText(this, "Nhấn lần nữa để thoát!", Toast.LENGTH_SHORT).show();
+                isToasted = true;
+            } else {
+                isToasted = false;
+                super.onBackPressed();
+                finishAffinity();
+            }
         } else {
-            isToasted = false;
             super.onBackPressed();
-            finishAffinity();
         }
     }
 

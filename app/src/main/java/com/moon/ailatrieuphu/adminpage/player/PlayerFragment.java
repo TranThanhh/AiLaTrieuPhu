@@ -129,7 +129,7 @@ public class PlayerFragment extends Fragment {
         fabtnOnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rvPlayer.smoothScrollToPosition(1);
+                rvPlayer.smoothScrollToPosition(0);
             }
         });
     }

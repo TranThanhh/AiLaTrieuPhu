@@ -128,7 +128,7 @@ public class ModeratorFragment extends Fragment {
         fabtnOnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rvMod.smoothScrollToPosition(1);
+                rvMod.smoothScrollToPosition(0);
             }
         });
     }
