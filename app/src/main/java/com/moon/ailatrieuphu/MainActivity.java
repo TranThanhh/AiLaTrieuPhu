@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox cbRemember;
     private String code = "";
     private CountDownTimer timer;
-    APIService apiService;
+    private APIService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         cbRemember = findViewById(R.id.chbRememberSignIn);
         apiService = APIConnect.getServer();
 
+        loadSharedPreferences();
+    }
+
+    private void loadSharedPreferences() {
         sharedPreferences = getSharedPreferences("userLogin", MODE_PRIVATE);
         edtEmailLogin.setText(sharedPreferences.getString("email", ""));
         edtPassdLogin.setText(sharedPreferences.getString("password", ""));
@@ -298,12 +303,12 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             ProgressDialogF.hideLoading();
-                            if(response.code() == 200){
+                            if (response.code() == 200) {
                                 Toast.makeText(MainActivity.this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
                                 dialogChangePass.cancel();
                             }
                         }
-                        
+
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
                             Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
@@ -390,7 +395,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Program.user = null;
-                dialog.cancel();
+                dialog.dismiss();
+            }
+        });
+        dialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                loadSharedPreferences();
             }
         });
     }
@@ -412,5 +423,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
 }
