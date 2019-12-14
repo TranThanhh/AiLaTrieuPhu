@@ -41,12 +41,16 @@ public interface APIService {
 
     //get list highscore
     @GET("/users/high-score")
-    Call<List<User>> getAllPlayerHighScore();
+    Call<List<User>> getAllPlayerHighScoreActive();
+
+
+    @GET("/users/nickname")
+    Call<String> getNickname(@Query("idUser") int idUser);
 
     //----------------------------------CAU HOI----------------------------------------------
     //GET List cau hoi theo idLoaiCH
     @GET("/cauhois/loai")
-    Call<List<CauHoi>> getByIdLoaiCH(@Query("idLoaiCH") int idLoaiCH);
+    Call<List<CauHoi>> getByIdLoaiCHActive(@Query("idLoaiCH") int idLoaiCH);
 
     //-----------------------------------ADMIN----------------------------------------------
     //Get list all cauhoi.
@@ -64,10 +68,10 @@ public interface APIService {
 
     //get list user.
     @GET("/admin/users-player")
-    Call<List<User>> getAllPlayer();
+    Call<List<User>> getAllPlayerActive();
     //get list moderator
     @GET("/admin/users-moderator")
-    Call<List<User>> getAllModerator();
+    Call<List<User>> getAllModeratorActive();
     //update role a user.
     @PUT("/admin/users/role-level")
     Call<String> updateRoleLevel(@Query("idUser") int idUser,@Query("roleLevel") int roleLevel, @Query("updateTime") String updateTime);
@@ -76,5 +80,5 @@ public interface APIService {
     Call<String> deleteUser(@Query("idUser") int idUser);
     //cout cauhois of user.
     @POST("/admin/users/size-of-cauhoi")
-    Call<Integer> countCauHoiOfUser(@Query("idUser") int idUser);
+    Call<Integer> countCauHoiOfUserActive(@Query("idUser") int idUser);
 }

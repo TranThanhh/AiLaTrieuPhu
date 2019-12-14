@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 
 public class ViewCauHoiFragment extends Fragment {
 
-    private TextView tvTitleCauHoi, tvNoiDung, tvCauA, tvCauB, tvCauC, tvCauD;
+    private TextView tvTitleCauHoi, tvNoiDung, tvCauA, tvCauB, tvCauC, tvCauD, tvAuthor;
     private ImageView imgvCauA, imgvCauB, imgvCauC, imgvCauD, imgvEdit, imgvBack;
     private RadioButton rbtnDe, rbtnVua, rbtnKho;
     private Button btnDelete;
@@ -126,6 +127,7 @@ public class ViewCauHoiFragment extends Fragment {
         tvCauB=view.findViewById(R.id.textviewCauB);
         tvCauC=view.findViewById(R.id.textviewCauC);
         tvCauD=view.findViewById(R.id.textviewCauD);
+        tvAuthor=view.findViewById(R.id.textviewAuthor);
         imgvCauA=view.findViewById(R.id.imageviewCauA);
         imgvCauB=view.findViewById(R.id.imageviewCauB);
         imgvCauC=view.findViewById(R.id.imageviewCauC);
@@ -155,10 +157,28 @@ public class ViewCauHoiFragment extends Fragment {
             if(Program.user.getIdUser()==cauHoi.getIdUser()){
                 imgvEdit.setVisibility(View.VISIBLE);
                 btnDelete.setVisibility(View.VISIBLE);
+                tvAuthor.setVisibility(View.GONE);
             } else {
                 imgvEdit.setVisibility(View.INVISIBLE);
                 btnDelete.setVisibility(View.INVISIBLE);
+                tvAuthor.setVisibility(View.VISIBLE);
             }
+        }
+
+        if(tvAuthor.getVisibility()==View.VISIBLE){
+            ProgressDialogF.showLoading(getContext());
+            apiService.getNickname(cauHoi.getIdUser()).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    ProgressDialogF.hideLoading();
+                    tvAuthor.setText("Tác giả: "+response.body());
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

@@ -119,7 +119,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             tvEmail.setText("Email: " + user.getEmail());
             tvNickname.setText("Nickname: " + user.getNickname());
 
-            apiService.countCauHoiOfUser(user.getIdUser()).enqueue(new Callback<Integer>() {
+            apiService.countCauHoiOfUserActive(user.getIdUser()).enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     if (response.body().intValue() == 0) {

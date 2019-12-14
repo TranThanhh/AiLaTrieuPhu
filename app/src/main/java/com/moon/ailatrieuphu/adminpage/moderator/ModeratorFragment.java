@@ -2,7 +2,6 @@ package com.moon.ailatrieuphu.adminpage.moderator;
 
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -85,7 +84,7 @@ public class ModeratorFragment extends Fragment {
 
     private void getAllModerator() {
         ProgressDialogF.showLoading(getContext());
-        apiService.getAllModerator().enqueue(new Callback<List<User>>() {
+        apiService.getAllModeratorActive().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 ProgressDialogF.hideLoading();
@@ -129,7 +128,7 @@ public class ModeratorFragment extends Fragment {
         fabtnOnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rvMod.smoothScrollToPosition(1);
+                rvMod.smoothScrollToPosition(0);
             }
         });
     }
@@ -216,7 +215,7 @@ public class ModeratorFragment extends Fragment {
 
     private void deleteUser(int idUser) {
         ProgressDialogF.showLoading(getContext());
-        apiService.countCauHoiOfUser(idUser).enqueue(new Callback<Integer>() {
+        apiService.countCauHoiOfUserActive(idUser).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 ProgressDialogF.hideLoading();

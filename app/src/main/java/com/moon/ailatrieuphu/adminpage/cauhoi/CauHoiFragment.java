@@ -128,7 +128,7 @@ public class CauHoiFragment extends Fragment {
         fabtnOnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rvCauHoi.smoothScrollToPosition(1);
+                rvCauHoi.smoothScrollToPosition(0);
             }
         });
     }
