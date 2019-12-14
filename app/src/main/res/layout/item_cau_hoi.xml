@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="Đã tạo lúc: "
+                    android:text="Đã tạo: "
                     android:textColor="#000"
                     android:textSize="12sp"
                     android:textStyle="italic" />
@@ -62,7 +62,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:gravity="center_vertical"
-                    android:text="| Cập nhật lúc: "
+                    android:text="| Cập nhật: "
                     android:textColor="#000"
                     android:textSize="12sp"
                     android:textStyle="italic" />
