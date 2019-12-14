@@ -43,6 +43,10 @@ public interface APIService {
     @GET("/users/high-score")
     Call<List<User>> getAllPlayerHighScoreActive();
 
+
+    @GET("/users/nickname")
+    Call<String> getNickname(@Query("idUser") int idUser);
+
     //----------------------------------CAU HOI----------------------------------------------
     //GET List cau hoi theo idLoaiCH
     @GET("/cauhois/loai")

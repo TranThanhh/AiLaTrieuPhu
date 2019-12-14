@@ -26,15 +26,6 @@
 <!--            android:padding="5dp"-->
 <!--            android:textSize="16sp" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/imgSearch"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_marginTop="3dp"-->
-<!--            android:layout_marginEnd="4dp"-->
-<!--            android:src="@drawable/ic_search" />-->
-
 <!--    </RelativeLayout>-->
 
     <TextView

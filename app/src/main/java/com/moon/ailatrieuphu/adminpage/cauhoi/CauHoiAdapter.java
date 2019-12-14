@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.model.CauHoi;
 
@@ -60,6 +62,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
 
         private TextView tvIdCauHoi, tvNoiDung, tvUpdateTime, tvCreateTime, tvUpdateTimeTitle, tvDapAnDung;
         private CardView cardViewCauHoi;
+        private ImageView imgvOwner;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,6 +73,7 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
             tvUpdateTime = itemView.findViewById(R.id.textviewUpdateTime);
             tvUpdateTimeTitle = itemView.findViewById(R.id.textviewUpdateTimeTitle);
             tvDapAnDung = itemView.findViewById(R.id.textviewDapAnDung);
+            imgvOwner = itemView.findViewById(R.id.imageviewOwner);
 
             itemView.setOnClickListener(this);
         }
@@ -107,6 +111,14 @@ public class CauHoiAdapter extends RecyclerView.Adapter<CauHoiAdapter.ViewHolder
                 case "D":
                     tvDapAnDung.setText("D. " + cauHoi.getCauD());
                     break;
+            }
+
+            if(Program.user.getRoleLevel()==2){
+                if(cauHoi.getIdUser()== Program.user.getIdUser())
+                    imgvOwner.setVisibility(View.VISIBLE);
+                else imgvOwner.setVisibility(View.INVISIBLE);
+            } else {
+                imgvOwner.setVisibility(View.VISIBLE);
             }
 
             if (position % 2 == 1) {
