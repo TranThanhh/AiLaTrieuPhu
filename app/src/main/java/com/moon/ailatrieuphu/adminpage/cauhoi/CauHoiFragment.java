@@ -152,7 +152,7 @@ public class CauHoiFragment extends Fragment {
             @Override
             public void onFailure(Call<List<CauHoi>> call, Throwable t) {
                 ProgressDialogF.hideLoading();
-                Toast.makeText(getContext(), "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
     }

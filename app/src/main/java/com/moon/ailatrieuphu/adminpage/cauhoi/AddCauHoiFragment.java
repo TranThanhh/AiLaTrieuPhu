@@ -42,8 +42,6 @@ public class AddCauHoiFragment extends Fragment {
     private FragmentManager fragmentManager;
     private CauHoi cauHoi = null;
 
-    private boolean isEditMode = false;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

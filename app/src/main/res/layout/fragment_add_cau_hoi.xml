@@ -167,7 +167,7 @@
                 android:layout_weight="6"
                 android:gravity="center_vertical"
                 android:hint="Nhập câu trả lời A"
-                android:maxLength="50"
+                android:maxLength="200"
                 android:singleLine="true"
                 android:textSize="20sp"></EditText>
 
@@ -178,7 +178,7 @@
                 android:layout_weight="6"
                 android:gravity="center_vertical"
                 android:hint="Nhập câu trả lời B"
-                android:maxLength="50"
+                android:maxLength="200"
                 android:singleLine="true"
                 android:textSize="20sp"></EditText>
 
@@ -189,7 +189,7 @@
                 android:layout_weight="6"
                 android:gravity="center_vertical"
                 android:hint="Nhập câu trả lời C"
-                android:maxLength="50"
+                android:maxLength="200"
                 android:singleLine="true"
                 android:textSize="20sp"></EditText>
 
@@ -200,7 +200,7 @@
                 android:layout_weight="6"
                 android:gravity="center_vertical"
                 android:hint="Nhập câu trả lời D"
-                android:maxLength="50"
+                android:maxLength="200"
                 android:singleLine="true"
                 android:textSize="20sp"></EditText>
 
