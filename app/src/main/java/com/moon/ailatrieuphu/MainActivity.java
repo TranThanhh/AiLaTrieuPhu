@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                             diaEdtCodeForgotPass.setEnabled(true);
                             diaEdtCodeForgotPass.requestFocus();
                             diaBtnConfirmCode.setEnabled(true);
-                            timer = new CountDownTimer(Program.timeFuture, Program.timeInterval) {
+                            timer = new CountDownTimer(Program.TIME_FUTURE, Program.TIME_INTERVAL) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
                                     diaTxtSendCode.setText("   " + millisUntilFinished / 1000 + "");
@@ -394,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Program.user = null;
+                Program.clearData();
                 dialog.dismiss();
             }
         });

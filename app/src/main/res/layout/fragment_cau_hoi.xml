@@ -9,24 +9,39 @@
     android:orientation="vertical"
     tools:context=".adminpage.cauhoi.CauHoiFragment">
 
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:layout_marginStart="5dp"-->
-<!--        android:layout_marginEnd="5dp">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_border_edittext">
 
-<!--        <EditText-->
-<!--            android:id="@+id/txtSearch"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:background="@drawable/rounded_border_edittext"-->
-<!--            android:hint="Search..."-->
-<!--            android:padding="5dp"-->
-<!--            android:textSize="16sp" />-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:paddingTop="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
 
-<!--    </RelativeLayout>-->
+            <EditText
+                android:id="@+id/edittextSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Tìm kiếm theo Nội dung, Ngày tạo, Ngày cập nhật"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:textSize="17sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/imageviewSearch"
+            android:layout_marginEnd="10dp"
+            android:paddingTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search"></ImageView>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textviewEmpty"
