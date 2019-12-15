@@ -10,16 +10,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
+import com.moon.ailatrieuphu.adminpage.AdminMainActivity;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
@@ -41,14 +46,16 @@ public class PlayerFragment extends Fragment {
     private RecyclerView rvPlayer;
     private TextView tvEmpty;
     private FloatingActionButton fabtnOnTop;
+    private EditText edtSearch;
+    private ImageView imgvSearch;
 
-    private String keyWord = "";
     private List<User> playerList;
     private boolean isLoaded = false;
 
     private APIService apiService;
     private UserAdapter userAdapter;
     private FragmentManager fragmentManager;
+    private AdminMainActivity adminMainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +64,8 @@ public class PlayerFragment extends Fragment {
 
         setControl(view);
 
+        //set event after load data.
+
         return view;
     }
 
@@ -64,26 +73,62 @@ public class PlayerFragment extends Fragment {
         rvPlayer = view.findViewById(R.id.recyclerviewPlayer);
         tvEmpty = view.findViewById(R.id.textviewEmpty);
         fabtnOnTop = view.findViewById(R.id.floatingactionbutton);
+        edtSearch = view.findViewById(R.id.edittextSearch);
+        imgvSearch = view.findViewById(R.id.imageviewSearch);
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
         playerList = new ArrayList<>();
+        adminMainActivity=(AdminMainActivity) getActivity();
 
         reloadData();
     }
 
-    private void reloadData() {
-        if (keyWord.equals("")) {
-            getAllPlayer();
+    public void reloadData() {
+        edtSearch.setText(Program.keyWordPlayer);
+        if (Program.keyWordPlayer.equals("")) {
+            getAllPlayerActive();
         } else {
-            processSearch(keyWord);
+            searchPlayerActive(Program.keyWordPlayer);
         }
     }
 
-    private void processSearch(String keyWord) {
+    private void searchPlayerActive(String keyWord) {
+        playerList.clear();
+        ProgressDialogF.showLoading(getContext());
+        apiService.searchPlayerActive(keyWord).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                ProgressDialogF.hideLoading();
+                if (response.code() == 204) {
+                    tvEmpty.setVisibility(View.VISIBLE);
+                    rvPlayer.setVisibility(View.GONE);
+                }
+                if (response.code() == 200) {
+                    playerList = response.body();
+                    tvEmpty.setVisibility(View.GONE);
+                    rvPlayer.setVisibility(View.VISIBLE);
+                }
+                if (!isLoaded) {
+                    userAdapter = new UserAdapter(playerList, getContext());
+                    rvPlayer.setLayoutManager(new LinearLayoutManager(getContext()));
+                    rvPlayer.setAdapter(userAdapter);
+                    setEvent();
+                    isLoaded = true;
+                } else {
+                    userAdapter.refresh(playerList);
+                }
+                adminMainActivity.bottomNav.getMenu().findItem(R.id.navigationPlayer).setTitle("Người chơi ("+userAdapter.getItemCount()+")");
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void getAllPlayer() {
+    private void getAllPlayerActive() {
         ProgressDialogF.showLoading(getContext());
         apiService.getAllPlayerActive().enqueue(new Callback<List<User>>() {
             @Override
@@ -108,6 +153,7 @@ public class PlayerFragment extends Fragment {
                     userAdapter.refresh(playerList);
                 }
                 rvPlayer.scrollToPosition(Program.positionPlayer);
+                adminMainActivity.bottomNav.getMenu().findItem(R.id.navigationPlayer).setTitle("Người chơi ("+userAdapter.getItemCount()+")");
             }
 
             @Override
@@ -130,6 +176,32 @@ public class PlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 rvPlayer.smoothScrollToPosition(0);
+            }
+        });
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //do nothing.
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().trim().equals("")) {
+                    getAllPlayerActive();
+                    Program.keyWordPlayer="";
+                }
+            }
+        });
+        imgvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Program.keyWordPlayer=edtSearch.getText().toString().trim();
+                if(!Program.keyWordPlayer.equals("")) searchPlayerActive(Program.keyWordPlayer);
             }
         });
     }

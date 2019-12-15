@@ -10,14 +10,17 @@ import java.util.Calendar;
 import java.util.Random;
 
 public class Program {
-    public static User user;
+    public static User user=null;
 
     public static int positionCauHoi=0;
     public static int positionPlayer=0;
     public static int positionModerator=0;
 
-    public static int timeFuture = 60000;
-    public static int timeInterval = 1000;
+    public static String keyWordCauHoi="";
+    public static String keyWordPlayer="";
+
+    public static final int TIME_FUTURE = 60000;
+    public static final int TIME_INTERVAL = 1000;
 
     public static String getDateTimeNow() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -47,5 +50,14 @@ public class Program {
             }
 
         }).start();
+    }
+
+    public static void clearData(){
+        user=null;
+        positionCauHoi=0;
+        positionModerator=0;
+        positionPlayer=0;
+        keyWordCauHoi="";
+        keyWordPlayer="";
     }
 }

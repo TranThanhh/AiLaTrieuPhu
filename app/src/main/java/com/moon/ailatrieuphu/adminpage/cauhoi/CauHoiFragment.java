@@ -2,25 +2,29 @@ package com.moon.ailatrieuphu.adminpage.cauhoi;
 
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
+import com.moon.ailatrieuphu.adminpage.AdminMainActivity;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;
+import com.moon.ailatrieuphu.utility.ProgressDialogF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +37,17 @@ public class CauHoiFragment extends Fragment {
 
     private RecyclerView rvCauHoi;
     private TextView tvEmpty;
+    private EditText edtSearch;
+    private ImageView imgvSearch;
 
-    private String keyWord = "";
     private List<CauHoi> cauHoiList;
-    private boolean isLoaded = true;
+    private boolean isLoaded = false;
     private FloatingActionButton fabtnOnTop;
 
     private APIService apiService;
     private CauHoiAdapter cauHoiAdapter;
     public FragmentManager fragmentManager;
+    private AdminMainActivity adminMainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +56,8 @@ public class CauHoiFragment extends Fragment {
 
         setControl(view);
 
+        //set event after loadData;
+
         return view;
     }
 
@@ -57,26 +65,62 @@ public class CauHoiFragment extends Fragment {
         rvCauHoi = view.findViewById(R.id.recyclerviewCauHoi);
         tvEmpty = view.findViewById(R.id.textviewEmpty);
         fabtnOnTop = view.findViewById(R.id.floatingactionbutton);
+        edtSearch = view.findViewById(R.id.edittextSearch);
+        imgvSearch = view.findViewById(R.id.imageviewSearch);
 
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
         cauHoiList = new ArrayList<>();
+        adminMainActivity=(AdminMainActivity) getActivity();
 
         reloadData();
     }
 
     public void reloadData() {
-        if (keyWord.equals("")) {
-            getListCauHoi();
+        edtSearch.setText(Program.keyWordCauHoi);
+        if (Program.keyWordCauHoi.equals("")) {
+            getAllCauHoiActive();
         } else {
-            processSearch(keyWord);
+            searchCauHoiActive(Program.keyWordCauHoi);
         }
     }
 
-    private void processSearch(String keyWord) {
+    private void searchCauHoiActive(String keyWord) {
+        cauHoiList.clear();
+        ProgressDialogF.showLoading(getContext());
+        apiService.searchCauHoiActive(keyWord).enqueue(new Callback<List<CauHoi>>() {
+            @Override
+            public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
+                ProgressDialogF.hideLoading();
+                if (response.code() == 204) {
+                    tvEmpty.setVisibility(View.VISIBLE);
+                    rvCauHoi.setVisibility(View.GONE);
+                }
+                if (response.code() == 200) {
+                    cauHoiList = response.body();
+                    tvEmpty.setVisibility(View.GONE);
+                    rvCauHoi.setVisibility(View.VISIBLE);
+                }
+                if (!isLoaded) {
+                    cauHoiAdapter = new CauHoiAdapter(cauHoiList, getContext());
+                    rvCauHoi.setLayoutManager(new LinearLayoutManager(getContext()));
+                    rvCauHoi.setAdapter(cauHoiAdapter);
+                    setEvent();
+                    isLoaded = true;
+                } else {
+                    cauHoiAdapter.refresh(cauHoiList);
+                }
+                adminMainActivity.bottomNav.getMenu().findItem(R.id.navigationQuestion).setTitle("Câu hỏi ("+cauHoiAdapter.getItemCount()+")");
+            }
+
+            @Override
+            public void onFailure(Call<List<CauHoi>> call, Throwable t) {
+                Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void getListCauHoi() {
+    private void getAllCauHoiActive() {
         ProgressDialogF.showLoading(getContext());
         apiService.getAllCauHoiActive().enqueue(new Callback<List<CauHoi>>() {
             @Override
@@ -92,16 +136,17 @@ public class CauHoiFragment extends Fragment {
                     tvEmpty.setVisibility(View.GONE);
                     rvCauHoi.setVisibility(View.VISIBLE);
                 }
-                if (isLoaded) {
+                if (!isLoaded) {
                     cauHoiAdapter = new CauHoiAdapter(cauHoiList, getContext());
                     rvCauHoi.setLayoutManager(new LinearLayoutManager(getContext()));
                     rvCauHoi.setAdapter(cauHoiAdapter);
                     setEvent();
-                    isLoaded = false;
+                    isLoaded = true;
                 } else {
                     cauHoiAdapter.refresh(cauHoiList);
                 }
                 rvCauHoi.scrollToPosition(Program.positionCauHoi);
+                adminMainActivity.bottomNav.getMenu().findItem(R.id.navigationQuestion).setTitle("Câu hỏi ("+cauHoiAdapter.getItemCount()+")");
             }
 
             @Override
@@ -129,6 +174,32 @@ public class CauHoiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 rvCauHoi.smoothScrollToPosition(0);
+            }
+        });
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //do nothing.
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().trim().equals("")) {
+                    getAllCauHoiActive();
+                    Program.keyWordCauHoi="";
+                }
+            }
+        });
+        imgvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Program.keyWordCauHoi=edtSearch.getText().toString().trim();
+                if(!Program.keyWordCauHoi.equals("")) searchCauHoiActive(Program.keyWordCauHoi);
             }
         });
     }

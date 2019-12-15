@@ -43,7 +43,7 @@ public interface APIService {
     @GET("/users/high-score")
     Call<List<User>> getAllPlayerHighScoreActive();
 
-
+    //get author's nickname for cauhoi.
     @GET("/users/nickname")
     Call<String> getNickname(@Query("idUser") int idUser);
 
@@ -65,6 +65,9 @@ public interface APIService {
     //delete cauhoi.
     @DELETE("/admin/cauhois")
     Call<String> deleteCauHoi(@Query("idCauHoi") int idCauHoi);
+    //search cauhoi.
+    @GET("/admin/cauhois/filter")
+    Call<List<CauHoi>> searchCauHoiActive(@Query("keyWord") String keyWord);
 
     //get list user.
     @GET("/admin/users-player")
@@ -72,6 +75,9 @@ public interface APIService {
     //get list moderator
     @GET("/admin/users-moderator")
     Call<List<User>> getAllModeratorActive();
+    //search Player.
+    @GET("/admin/users/filter-player")
+    Call<List<User>> searchPlayerActive(@Query("keyWord") String keyWord);
     //update role a user.
     @PUT("/admin/users/role-level")
     Call<String> updateRoleLevel(@Query("idUser") int idUser,@Query("roleLevel") int roleLevel, @Query("updateTime") String updateTime);

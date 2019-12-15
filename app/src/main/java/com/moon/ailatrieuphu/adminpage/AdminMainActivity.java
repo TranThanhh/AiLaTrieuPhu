@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
@@ -27,7 +28,7 @@ import com.moon.ailatrieuphu.player.ProfileActivity;
 
 public class AdminMainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNav;
+    public BottomNavigationView bottomNav;
     private Toolbar toolbar;
 
     private APIService apiService;
@@ -105,6 +106,16 @@ public class AdminMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.menuReload:
+                isToasted = false;
+                if(fragmentManager.findFragmentByTag("CauHoiFrag")!=null){
+                    ((CauHoiFragment) fragmentManager.findFragmentByTag("CauHoiFrag")).reloadData();
+                } else if(fragmentManager.findFragmentByTag("PlayerFrag")!=null){
+                    ((PlayerFragment) fragmentManager.findFragmentByTag("PlayerFrag")).reloadData();
+                } else if(fragmentManager.findFragmentByTag("ModeratorFrag")!=null){
+                    ((ModeratorFragment) fragmentManager.findFragmentByTag("ModeratorFrag")).reloadData();
+                }
+                break;
 
             case R.id.menuAddQuestion:
                 isToasted = false;
@@ -117,7 +128,7 @@ public class AdminMainActivity extends AppCompatActivity {
                 break;
 
             case R.id.menuLogout:
-                Program.user = null;
+                Program.clearData();
                 finish();
                 startActivity(new Intent(AdminMainActivity.this, MainActivity.class));
                 break;
@@ -129,7 +140,7 @@ public class AdminMainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         isToasted = false;
-        Program.user = null;
+        Program.clearData();
     }
 
     @Override

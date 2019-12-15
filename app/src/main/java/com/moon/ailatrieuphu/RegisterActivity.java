@@ -19,12 +19,10 @@ import android.widget.Toast;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.email.EncryptPass;
-import com.moon.ailatrieuphu.email.GMailSender;
 import com.moon.ailatrieuphu.email.TimerSingleton;
 import com.moon.ailatrieuphu.model.User;
 import com.moon.ailatrieuphu.utility.ProgressDialogF;
 
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -168,7 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
         dialogSendCode.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                timer =new CountDownTimer(Program.timeFuture, Program.timeInterval) {
+                timer =new CountDownTimer(Program.TIME_FUTURE, Program.TIME_INTERVAL) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         diaTxtSendCode2.setText("   " + millisUntilFinished/1000 + "");

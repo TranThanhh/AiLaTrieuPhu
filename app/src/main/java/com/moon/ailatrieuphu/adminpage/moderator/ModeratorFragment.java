@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
+import com.moon.ailatrieuphu.adminpage.AdminMainActivity;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.utility.ProgressDialogF;
 import com.moon.ailatrieuphu.R;
@@ -40,7 +41,6 @@ public class ModeratorFragment extends Fragment {
     private RecyclerView rvMod;
     private TextView tvEmpty;
 
-    private String keyWord = "";
     private List<User> modList;
     private boolean isLoaded = false;
     private FloatingActionButton fabtnOnTop;
@@ -48,6 +48,7 @@ public class ModeratorFragment extends Fragment {
     private APIService apiService;
     private UserAdapter userAdapter;
     private FragmentManager fragmentManager;
+    private AdminMainActivity adminMainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,19 +68,13 @@ public class ModeratorFragment extends Fragment {
         fragmentManager = getFragmentManager();
         apiService = APIConnect.getServer();
         modList = new ArrayList<>();
+        adminMainActivity = (AdminMainActivity) getActivity();
 
         reloadData();
     }
 
-    private void reloadData() {
-        if (keyWord.equals("")) {
-            getAllModerator();
-        } else {
-            processSearch(keyWord);
-        }
-    }
-
-    private void processSearch(String keyWord) {
+    public void reloadData() {
+        getAllModerator();
     }
 
     private void getAllModerator() {
@@ -107,6 +102,7 @@ public class ModeratorFragment extends Fragment {
                     userAdapter.refresh(modList);
                 }
                 rvMod.scrollToPosition(Program.positionModerator);
+                adminMainActivity.bottomNav.getMenu().findItem(R.id.navigationModerator).setTitle("Điều hành viên (" + userAdapter.getItemCount() + ")");
             }
 
             @Override
@@ -197,8 +193,8 @@ public class ModeratorFragment extends Fragment {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 ProgressDialogF.hideLoading();
-                if(response.body().equals("success")){
-                    Program.sendMail(titleMail,messageMail,"",userRestorePassword.getEmail());
+                if (response.body().equals("success")) {
+                    Program.sendMail(titleMail, messageMail, "", userRestorePassword.getEmail());
                     Toast.makeText(getContext(), "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
