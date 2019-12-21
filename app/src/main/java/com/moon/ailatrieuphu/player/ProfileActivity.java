@@ -22,7 +22,9 @@ import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.model.User;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.show();
+
                 edtOldPass=dialog.findViewById(R.id.editTextCurrentPassword);
                 edtNewPass=dialog.findViewById(R.id.editTextNewPassword);
                 edtReNewPass=dialog.findViewById(R.id.editTextReNewPassword);
@@ -93,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
                             edtOldPass.requestFocus();
                             return;
                         }
-                        if(!EncryptPass.md5(currentPass.trim()).equals(Program.user.getPassword())){
+                        if(!BCrypt.checkpw(currentPass.trim(),Program.user.getPassword())){
                             Toast.makeText(ProfileActivity.this,"Mật khẩu sai. Vui lòng nhập lại!",Toast.LENGTH_SHORT).show();
                             edtOldPass.requestFocus();
                             edtOldPass.setSelection(edtOldPass.getText().length());
@@ -124,26 +127,27 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                         final User user=new User();
                         user.setIdUser(Program.user.getIdUser());
-                        user.setPassword(EncryptPass.md5(newPass));
+                        user.setPassword(EncryptPass.bcrypt(newPass));
                         user.setUpdateTime(Program.getDateTimeNow());
-                        ProgressDialogF.showLoading(ProfileActivity.this);
+                        LoadingDialog.show(dialog.getContext());
                         apiService.updatePassword(user).enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
-                                ProgressDialogF.hideLoading();
+                                LoadingDialog.hide();
                                 if(response.body().equals("success")){
                                     Toast.makeText(ProfileActivity.this,"Thay đổi mật khẩu thành công!",Toast.LENGTH_SHORT).show();
                                     Program.user.setPassword(user.getPassword());
                                     Intent intent=new Intent(ProfileActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }else{
-                                    Toast.makeText(ProfileActivity.this,"Thay đổi mật khẩu thất bại!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ProfileActivity.this,R.string.err_internal_server,Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<String> call, Throwable t) {
-                                Toast.makeText(ProfileActivity.this,"Thay đổi mật khẩu thất bại. Có lỗi xảy ra!",Toast.LENGTH_SHORT).show();
+                                LoadingDialog.hide();
+                                Toast.makeText(ProfileActivity.this,R.string.err_connect,Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

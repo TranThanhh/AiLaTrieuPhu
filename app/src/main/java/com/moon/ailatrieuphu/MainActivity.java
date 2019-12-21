@@ -17,7 +17,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +28,7 @@ import com.moon.ailatrieuphu.email.TimerSingleton;
 import com.moon.ailatrieuphu.model.User;
 import com.moon.ailatrieuphu.player.ProfileActivity;
 import com.moon.ailatrieuphu.player.PlayerHighScoreDialogFragment;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,11 +102,13 @@ public class MainActivity extends AppCompatActivity {
 
                 final User user = new User();
                 user.setEmail(email);
-                user.setPassword(EncryptPass.md5(password));
+                user.setPassword(password);
 
+                LoadingDialog.show(MainActivity.this);
                 apiService.getUserLogin(user).enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
+                        LoadingDialog.hide();
                         if (response.code() == 200) {
                             //login success
                             User user1 = response.body();
@@ -134,11 +135,14 @@ public class MainActivity extends AppCompatActivity {
                             }
                         } else {
                             Toast.makeText(MainActivity.this, "Sai Email hoặc Password. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                            edtEmailLogin.setText("");
+                            edtPassdLogin.setText("");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
+                        LoadingDialog.hide();
                         Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -199,9 +203,11 @@ public class MainActivity extends AppCompatActivity {
 
                 code = Program.getRandom8NumberString();
                 userForgot.setEmail(sEmail.trim());
+                LoadingDialog.show(MainActivity.this);
                 apiService.checkUserExists(userForgot).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        LoadingDialog.hide();
                         if (response.body().equals("email")) {
                             Program.sendMail(titleMail, messageMail, code, userForgot.getEmail());
                             TimerSingleton.timer.start();
@@ -228,7 +234,8 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        LoadingDialog.hide();
+                        Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -297,13 +304,13 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     final User userChangePass = new User();
                     userChangePass.setEmail(email);
-                    userChangePass.setPassword(EncryptPass.md5(newPassword.trim()));
+                    userChangePass.setPassword(EncryptPass.bcrypt(newPassword.trim()));
                     userChangePass.setUpdateTime(Program.getDateTimeNow());
-                    ProgressDialogF.showLoading(MainActivity.this);
+                    LoadingDialog.show(MainActivity.this);
                     apiService.forgotPassword(userChangePass).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
-                            ProgressDialogF.hideLoading();
+                            LoadingDialog.hide();
                             if (response.code() == 200) {
                                 Toast.makeText(MainActivity.this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
                                 dialogChangePass.cancel();
@@ -312,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
+                            LoadingDialog.hide();
                             Toast.makeText(MainActivity.this, R.string.err_connect, Toast.LENGTH_SHORT).show();
                         }
                     });

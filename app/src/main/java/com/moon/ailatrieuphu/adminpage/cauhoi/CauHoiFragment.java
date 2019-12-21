@@ -24,7 +24,7 @@ import com.moon.ailatrieuphu.adminpage.AdminMainActivity;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,11 +87,11 @@ public class CauHoiFragment extends Fragment {
 
     private void searchCauHoiActive(String keyWord) {
         cauHoiList.clear();
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.searchCauHoiActive(keyWord).enqueue(new Callback<List<CauHoi>>() {
             @Override
             public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.code() == 204) {
                     tvEmpty.setVisibility(View.VISIBLE);
                     rvCauHoi.setVisibility(View.GONE);
@@ -110,6 +110,7 @@ public class CauHoiFragment extends Fragment {
                 } else {
                     cauHoiAdapter.refresh(cauHoiList);
                 }
+                rvCauHoi.scrollToPosition(Program.positionCauHoi);
                 adminMainActivity.bottomNav.getMenu().findItem(R.id.navigationQuestion).setTitle("Câu hỏi ("+cauHoiAdapter.getItemCount()+")");
             }
 
@@ -121,11 +122,11 @@ public class CauHoiFragment extends Fragment {
     }
 
     private void getAllCauHoiActive() {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.getAllCauHoiActive().enqueue(new Callback<List<CauHoi>>() {
             @Override
             public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.code() == 204) {
                     tvEmpty.setVisibility(View.VISIBLE);
                     rvCauHoi.setVisibility(View.GONE);
@@ -151,7 +152,7 @@ public class CauHoiFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<CauHoi>> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });

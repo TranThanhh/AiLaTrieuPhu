@@ -22,7 +22,7 @@ import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.CauHoi;
 import com.moon.ailatrieuphu.model.User;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,11 +72,11 @@ public class PlayActivity extends AppCompatActivity {
         list5ChHard=new ArrayList<>();
 
         apiService= APIConnect.getServer();
-        ProgressDialogF.showLoading(PlayActivity.this);
+        LoadingDialog.show(PlayActivity.this);
         apiService.getByIdLoaiCHActive(idEasy).enqueue(new Callback<List<CauHoi>>() {
             @Override
             public void onResponse(Call<List<CauHoi>> call, Response<List<CauHoi>> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 listRandomEasy =getRandomNonRepeatingIntegers(5, 0,response.body().size()-1);
                 Log.d("dapan list",listRandomEasy+"");
 
@@ -536,12 +536,12 @@ public class PlayActivity extends AppCompatActivity {
         if(diem>diemCao){
             user.setDiemCao(diem);
             user.setUpdateTime(Program.getDateTimeNow());
-            ProgressDialogF.showLoading(this);
+            LoadingDialog.show(this);
             //call api to modify score
             apiService.modifyScore(user).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    ProgressDialogF.hideLoading();
+                    LoadingDialog.hide();
                     Log.d("diem", diem + "");
                 }
 

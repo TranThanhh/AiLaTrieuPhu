@@ -16,7 +16,7 @@ import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.model.User;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +58,11 @@ public class PlayerHighScoreDialogFragment extends DialogFragment {
     }
 
     private void getAllPlayerHighScore() {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.getAllPlayerHighScoreActive().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.code() == 200) {
                     playerHighScoreList = response.body();
                     //playerList.sort(Comparator.comparing(CauHoi::getIdCauHoi).reversed());
@@ -84,7 +84,7 @@ public class PlayerHighScoreDialogFragment extends DialogFragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });

@@ -13,7 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
@@ -132,7 +132,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
                 @Override
                 public void onFailure(Call<Integer> call, Throwable t) {
-                    ProgressDialogF.hideLoading();
+                    LoadingDialog.hide();
                     Toast.makeText(context, R.string.err_connect, Toast.LENGTH_SHORT).show();
                 }
             });
