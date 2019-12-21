@@ -22,7 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.adminpage.AdminMainActivity;
 import com.moon.ailatrieuphu.email.EncryptPass;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.UserAdapter;
 import com.moon.ailatrieuphu.api.APIConnect;
@@ -78,11 +78,11 @@ public class ModeratorFragment extends Fragment {
     }
 
     private void getAllModerator() {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.getAllModeratorActive().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.code() == 200) {
                     modList = response.body();
                     //modList.sort(Comparator.comparing(CauHoi::getIdCauHoi).reversed());
@@ -107,7 +107,7 @@ public class ModeratorFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
@@ -180,22 +180,24 @@ public class ModeratorFragment extends Fragment {
     }
 
     private void resetUserPassword(User userRestorePassword) {
-        String newPass = Program.getRandom8NumberString();
+        //String newPass = Program.getRandom8NumberString();
+        String newPass="12345678";
         String messageMail = "Mật khẩu của bạn đã được thay đổi." + "" +
                 "\nMật khẩu mới của bạn là: " + newPass +
                 "\nHãy đăng nhập và thay đổi mật khẩu của bạn!";
         String titleMail = "[Thay đổi mật khẩu] Game Ai Là Triệu Phú";
 
-        userRestorePassword.setPassword(EncryptPass.md5(newPass));
+        userRestorePassword.setPassword(EncryptPass.bcrypt(newPass));
         userRestorePassword.setUpdateTime(Program.getDateTimeNow());
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.updatePassword(userRestorePassword).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.body().equals("success")) {
-                    Program.sendMail(titleMail, messageMail, "", userRestorePassword.getEmail());
+                    //Program.sendMail(titleMail, messageMail, "", userRestorePassword.getEmail());
                     Toast.makeText(getContext(), "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                    reloadData();
                 } else {
                     Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
                 }
@@ -203,18 +205,18 @@ public class ModeratorFragment extends Fragment {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void deleteUser(int idUser) {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.countCauHoiOfUserActive(idUser).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.body() == 0) {
                     showDeleteAlertDialog(idUser);
                 } else {
@@ -224,7 +226,7 @@ public class ModeratorFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
@@ -257,11 +259,11 @@ public class ModeratorFragment extends Fragment {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ProgressDialogF.showLoading(getContext());
+                LoadingDialog.show(getContext());
                 apiService.deleteUser(idUser).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        ProgressDialogF.hideLoading();
+                        LoadingDialog.hide();
                         if (response.body().equals("success")) {
                             reloadData();
                             Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
@@ -272,7 +274,7 @@ public class ModeratorFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        ProgressDialogF.hideLoading();
+                        LoadingDialog.hide();
                         Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -288,11 +290,11 @@ public class ModeratorFragment extends Fragment {
     }
 
     private void downgradeToUser(int idUser) {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.updateRoleLevel(idUser, 0, Program.getDateTimeNow()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.body().equals("success")) {
                     Toast.makeText(getContext(), "Thành công!", Toast.LENGTH_SHORT).show();
                     reloadData();
@@ -303,7 +305,7 @@ public class ModeratorFragment extends Fragment {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });

@@ -26,7 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.moon.ailatrieuphu.Program;
 import com.moon.ailatrieuphu.adminpage.AdminMainActivity;
 import com.moon.ailatrieuphu.email.EncryptPass;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.adminpage.UserAdapter;
 import com.moon.ailatrieuphu.api.APIConnect;
@@ -95,11 +95,11 @@ public class PlayerFragment extends Fragment {
 
     private void searchPlayerActive(String keyWord) {
         playerList.clear();
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.searchPlayerActive(keyWord).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.code() == 204) {
                     tvEmpty.setVisibility(View.VISIBLE);
                     rvPlayer.setVisibility(View.GONE);
@@ -118,6 +118,7 @@ public class PlayerFragment extends Fragment {
                 } else {
                     userAdapter.refresh(playerList);
                 }
+                rvPlayer.scrollToPosition(Program.positionPlayer);
                 adminMainActivity.bottomNav.getMenu().findItem(R.id.navigationPlayer).setTitle("Người chơi ("+userAdapter.getItemCount()+")");
             }
 
@@ -129,11 +130,11 @@ public class PlayerFragment extends Fragment {
     }
 
     private void getAllPlayerActive() {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.getAllPlayerActive().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.code() == 200) {
                     playerList = response.body();
                     //playerList.sort(Comparator.comparing(CauHoi::getIdCauHoi).reversed());
@@ -158,7 +159,7 @@ public class PlayerFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
@@ -266,16 +267,18 @@ public class PlayerFragment extends Fragment {
                 "\nHãy đăng nhập và thay đổi mật khẩu của bạn!";
         String titleMail = "[Thay đổi mật khẩu] Game Ai Là Triệu Phú";
 
-        userRestorePassword.setPassword(EncryptPass.md5(newPass));
+        userRestorePassword.setPassword(EncryptPass.bcrypt(newPass));
         userRestorePassword.setUpdateTime(Program.getDateTimeNow());
-        ProgressDialogF.showLoading(getContext());
+
+        LoadingDialog.show(getContext());
         apiService.updatePassword(userRestorePassword).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if(response.body().equals("success")){
                     Program.sendMail(titleMail,messageMail,"",userRestorePassword.getEmail());
                     Toast.makeText(getContext(), "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                    reloadData();
                 } else {
                     Toast.makeText(getContext(), R.string.err_internal_server, Toast.LENGTH_SHORT).show();
                 }
@@ -283,18 +286,18 @@ public class PlayerFragment extends Fragment {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void deleteUser(int idUser) {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.countCauHoiOfUserActive(idUser).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.body() == 0) {
                     showDeleteAlertDialog(idUser);
                 } else {
@@ -304,7 +307,7 @@ public class PlayerFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
@@ -337,11 +340,11 @@ public class PlayerFragment extends Fragment {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ProgressDialogF.showLoading(getContext());
+                LoadingDialog.show(getContext());
                 apiService.deleteUser(idUser).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        ProgressDialogF.hideLoading();
+                        LoadingDialog.hide();
                         if (response.body().equals("success")) {
                             reloadData();
                             Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
@@ -352,7 +355,7 @@ public class PlayerFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        ProgressDialogF.hideLoading();
+                        LoadingDialog.hide();
                         Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -368,11 +371,11 @@ public class PlayerFragment extends Fragment {
     }
 
     private void upgradeToMod(int idUser) {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.updateRoleLevel(idUser, 2, Program.getDateTimeNow()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.body().equals("success")) {
                     Toast.makeText(getContext(), "Thành công!", Toast.LENGTH_SHORT).show();
                     reloadData();
@@ -383,7 +386,7 @@ public class PlayerFragment extends Fragment {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });

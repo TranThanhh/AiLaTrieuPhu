@@ -21,7 +21,7 @@ import com.moon.ailatrieuphu.api.APIService;
 import com.moon.ailatrieuphu.email.EncryptPass;
 import com.moon.ailatrieuphu.email.TimerSingleton;
 import com.moon.ailatrieuphu.model.User;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 
 import java.util.regex.Pattern;
 
@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                     edtRePassword.setSelection(edtRePassword.getText().length());
                     return;
                 }
-                passwordEncrypt= EncryptPass.md5(password.trim());
+                passwordEncrypt= EncryptPass.bcrypt(password.trim());
                 final User user=new User();
                 user.setEmail(email.trim());
                 user.setNickname(nickname.trim());
@@ -226,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity {
                     apiService.addUser(user).enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            ProgressDialogF.hideLoading();
+                            LoadingDialog.hide();
                             if((response.body())!=0){
                                 Toast.makeText(RegisterActivity.this,"Đăng ký thành công!",Toast.LENGTH_SHORT).show();
                                 //Program.user=user;

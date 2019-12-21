@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
@@ -128,11 +128,11 @@ public class AddCauHoiFragment extends Fragment {
     }
 
     private void addCauHoi(CauHoi cauHoiNew) {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.addCauHoi(cauHoiNew).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.body().equals("success")) {
                     Toast.makeText(getContext(), "Thêm câu hỏi thành công!", Toast.LENGTH_SHORT).show();
                     fragmentManager.popBackStack();
@@ -144,18 +144,18 @@ public class AddCauHoiFragment extends Fragment {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void editCauHoi(CauHoi cauHoiEdit) {
-        ProgressDialogF.showLoading(getContext());
+        LoadingDialog.show(getContext());
         apiService.updateCauHoi(cauHoiEdit).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                ProgressDialogF.hideLoading();
+                LoadingDialog.hide();
                 if (response.body().equals("success")) {
                     Toast.makeText(getContext(), "Sửa câu hỏi thành công!", Toast.LENGTH_SHORT).show();
                     fragmentManager.popBackStack();

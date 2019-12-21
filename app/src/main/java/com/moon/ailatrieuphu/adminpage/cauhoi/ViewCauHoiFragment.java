@@ -14,13 +14,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moon.ailatrieuphu.Program;
-import com.moon.ailatrieuphu.utility.ProgressDialogF;
+import com.moon.ailatrieuphu.utility.LoadingDialog;
 import com.moon.ailatrieuphu.R;
 import com.moon.ailatrieuphu.api.APIConnect;
 import com.moon.ailatrieuphu.api.APIService;
@@ -89,11 +88,11 @@ public class ViewCauHoiFragment extends Fragment {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ProgressDialogF.showLoading(getContext());
+                LoadingDialog.show(getContext());
                 apiService.deleteCauHoi(idCauHoi).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        ProgressDialogF.hideLoading();
+                        LoadingDialog.hide();
                         if (response.body().equals("success")) {
                             Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
                             fragmentManager.popBackStack();
@@ -105,7 +104,7 @@ public class ViewCauHoiFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        ProgressDialogF.hideLoading();
+                        LoadingDialog.hide();
                         Toast.makeText(getContext(), R.string.err_connect, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -166,11 +165,11 @@ public class ViewCauHoiFragment extends Fragment {
         }
 
         if(tvAuthor.getVisibility()==View.VISIBLE){
-            ProgressDialogF.showLoading(getContext());
+            LoadingDialog.show(getContext());
             apiService.getNickname(cauHoi.getIdUser()).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    ProgressDialogF.hideLoading();
+                    LoadingDialog.hide();
                     tvAuthor.setText("Tác giả: "+response.body());
                 }
 
